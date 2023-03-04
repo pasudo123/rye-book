@@ -1,7 +1,7 @@
 package com.github.ryebook
 
-import com.github.ryebook.book.infra.BookRepository
-import com.github.ryebook.book.model.Book
+import com.github.ryebook.product.infra.BookRepository
+import com.github.ryebook.product.model.Book
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -19,19 +19,27 @@ class LocalDateInitializer(
 
     override fun run(args: ApplicationArguments?) {
         log.info("@@ init")
-        addBooks(30)
+        addBooks()
     }
 
-    private fun addBooks(size: Int) {
+    private fun addBooks() {
         val books = mutableListOf<Book>()
 
-        (0..size).forEach {
-            books.add(Book(
+        books.add(
+            Book(
                 name = "홍길동전-${randomUUIDByLength(10)}",
                 author = "허균-${randomUUIDByLength(10)}",
                 publisher = "민음사-${randomUUIDByLength(10)}"
-            ))
-        }
+            )
+        )
+
+        books.add(
+            Book(
+                name = "구운몽전-${randomUUIDByLength(10)}",
+                author = "김만중-${randomUUIDByLength(10)}",
+                publisher = "민음사-${randomUUIDByLength(10)}"
+            )
+        )
 
         bookRepository.saveAllAndFlush(books)
     }

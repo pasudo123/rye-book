@@ -1,0 +1,9 @@
+package com.github.ryebook.common.error
+
+open class CustomException(
+    override val message: String
+) : RuntimeException(message)
+
+class DomainPolicyException(
+    override val message: String
+) : CustomException(message)

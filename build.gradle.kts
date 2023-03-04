@@ -64,15 +64,15 @@ dependencies {
     testImplementation("org.testcontainers:mysql")
 
     // mock & kotest
-    testImplementation("io.mockk:mockk:${mockkVersion}")
-    testImplementation("io.kotest:kotest-assertions-core:${kotestVersion}")
-    testImplementation("com.ninja-squad:springmockk:${springmockkVersion}")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
+    testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
 }
 
 dependencyManagement {
     imports {
-        mavenBom("org.testcontainers:testcontainers-bom:${testcontainersVersion}")
-        mavenBom("org.springframework.statemachine:spring-statemachine-bom:${springStatemachineVersion}")
+        mavenBom("org.testcontainers:testcontainers-bom:$testcontainersVersion")
+        mavenBom("org.springframework.statemachine:spring-statemachine-bom:$springStatemachineVersion")
     }
 }
 

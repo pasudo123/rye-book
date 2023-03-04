@@ -5,5 +5,4 @@ import org.springframework.statemachine.config.EnableStateMachine
 
 @Configuration
 @EnableStateMachine
-class CustomStateMachineConfiguration {
-}
+class CustomStateMachineConfiguration

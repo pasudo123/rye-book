@@ -9,5 +9,4 @@ class RyeBookApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
