@@ -14,8 +14,21 @@ plugins {
     kotlin("plugin.jpa") version kotlinVersion
     kotlin("kapt") version kotlinVersion
 
+    // https://kotlinlang.org/docs/no-arg-plugin.html#jpa-support
+    // kotlin jpa 사용 시, noargs 를 사용하기 위함 : 프록시 생성 시 필요.
+    id("org.jetbrains.kotlin.plugin.noarg") version kotlinVersion
+    // https://kotlinlang.org/docs/all-open-plugin.html
+    // kotlin jpa 사용 시, allopen final 키워드를 특정 애노테이션 기준으로 제거해주기 위함
+    id("org.jetbrains.kotlin.plugin.allopen") version kotlinVersion
+
     // kotlin lint
     id("org.jlleitschuh.gradle.ktlint") version klintVersion
+}
+
+allOpen {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
 }
 
 group = "com.github"
@@ -30,8 +43,8 @@ extra["testcontainersVersion"] = "1.17.6"
 val kotestVersion: String = System.getProperty("version.kotestVersion")
 val mockkVersion: String = System.getProperty("version.mocckVersion")
 val springmockkVersion: String = System.getProperty("version.springmockkVersion")
-val testcontainersVersion = System.getProperty("version.testcontainerVersion")
-val springStatemachineVersion = System.getProperty("version.springStatemachineVersion")
+val testcontainersVersion: String = System.getProperty("version.testcontainerVersion")
+val springStatemachineVersion: String = System.getProperty("version.springStatemachineVersion")
 
 dependencies {
 
