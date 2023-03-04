@@ -1,5 +1,6 @@
 package com.github.ryebook
 
+import com.github.ryebook.product.application.ProductCreateService
 import com.github.ryebook.product.infra.BookRepository
 import com.github.ryebook.product.model.Book
 import org.slf4j.LoggerFactory
@@ -12,7 +13,8 @@ import java.util.UUID
 @Profile("default")
 @Component
 class LocalDateInitializer(
-    private val bookRepository: BookRepository
+    private val bookRepository: BookRepository,
+    private val productCreateService: ProductCreateService
 ) : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -20,6 +22,7 @@ class LocalDateInitializer(
     override fun run(args: ApplicationArguments?) {
         log.info("@@ init")
         addBooks()
+        addBookProducts()
     }
 
     private fun addBooks() {
@@ -42,6 +45,10 @@ class LocalDateInitializer(
         )
 
         bookRepository.saveAllAndFlush(books)
+    }
+
+    private fun addBookProducts(price: Long = 10000) {
+        productCreateService.createBookProductWithPrice(price)
     }
 
     private fun randomUUIDByLength(length: Int): String {

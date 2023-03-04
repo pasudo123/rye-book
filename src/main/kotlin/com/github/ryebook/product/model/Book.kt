@@ -42,11 +42,11 @@ class Book(
         this.initValidateOrThrow()
     }
 
-    fun register() {
+    fun registered() {
         this.register = true
     }
 
-    fun deregister() {
+    fun deregistered() {
         this.register = false
     }
 

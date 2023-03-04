@@ -7,3 +7,7 @@ open class CustomException(
 class DomainPolicyException(
     override val message: String
 ) : CustomException(message)
+
+class DataNotFoundException(
+    override val message: String
+) : CustomException(message)

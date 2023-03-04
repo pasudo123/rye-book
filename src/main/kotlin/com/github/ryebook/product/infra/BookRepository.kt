@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 interface BookRepository : JpaRepository<Book, Long> {
 
     fun findAllByRegister(register: Boolean): List<Book>
+
+    fun findOneById(id: Long): Book?
 }

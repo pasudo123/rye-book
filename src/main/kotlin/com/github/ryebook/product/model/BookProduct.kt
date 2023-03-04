@@ -1,20 +1,26 @@
 package com.github.ryebook.product.model
 
+import com.github.ryebook.common.error.DomainPolicyException
+
 data class BookProduct(
-    val id: Long,
-    val name: String,
-    val author: String,
-    val publisher: String,
+    val book: Book,
     val price: Long? = null
 ) {
 
     companion object {
-        fun from(book: Book, price: Long): BookProduct {
+        fun from(product: Product): BookProduct {
             return BookProduct(
-                book.id!!,
-                book.name,
-                book.author,
-                book.publisher,
+                product.book!!,
+                product.price
+            )
+        }
+
+        fun from(book: Book, price: Long): BookProduct {
+            if (book.register) {
+                throw DomainPolicyException("bookId[${book.id}] 는 상품으로 등록되었습니다.")
+            }
+            return BookProduct(
+                book,
                 price
             )
         }
