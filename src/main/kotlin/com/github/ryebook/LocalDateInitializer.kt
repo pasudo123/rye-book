@@ -1,26 +1,35 @@
 package com.github.ryebook
 
+import com.github.ryebook.common.util.isDataInit
 import com.github.ryebook.product.application.ProductCreateService
 import com.github.ryebook.product.infra.BookRepository
-import com.github.ryebook.product.model.Book
+import com.github.ryebook.product.model.pub.Book
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.annotation.Profile
+import org.springframework.core.env.Environment
 import org.springframework.stereotype.Component
 import java.util.UUID
 
 @Profile("default")
 @Component
 class LocalDateInitializer(
+    private val environment: Environment,
     private val bookRepository: BookRepository,
-    private val productCreateService: ProductCreateService
+    private val productCreateService: ProductCreateService,
 ) : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
     override fun run(args: ApplicationArguments?) {
-        log.info("@@ init")
+
+        if (environment.isDataInit().not()) {
+            log.info("@@ init(X) @@")
+            return
+        }
+
+        log.info("@@ init(O) @@")
         addBooks()
         addBookProducts()
     }

@@ -1,0 +1,4 @@
+### GET products (book)
+### GET request with environment variables
+GET {{host}}/products/BOOK
+Accept: application/json

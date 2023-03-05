@@ -1,4 +1,4 @@
-package com.github.ryebook.product.model
+package com.github.ryebook.product.model.pub
 
 import com.github.ryebook.common.model.BaseEntity
 import javax.persistence.Column
@@ -18,10 +18,9 @@ import javax.persistence.Table
 class Product(
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type", columnDefinition = "VARCHAR(64) comment '상품타입'")
-    private val productType: ProductType,
+    private val type: Type,
     price: Long,
-    @Column(name = "quantity", columnDefinition = "bigint comment '수량'")
-    private var quantity: Long = 0
+    quantity: Long,
 ) : BaseEntity() {
 
     @Id
@@ -33,12 +32,16 @@ class Product(
     var price: Long = price
         protected set
 
+    @Column(name = "quantity", columnDefinition = "bigint comment '수량'")
+    var quantity: Long = quantity
+        protected set
+
     @JoinColumn(name = "book_id", nullable = true)
     @OneToOne(targetEntity = Book::class, fetch = FetchType.LAZY, optional = false)
     var book: Book? = null
         protected set
 
-    enum class ProductType(desc: String) {
+    enum class Type(desc: String) {
         BOOK("도서타입")
     }
 
@@ -49,7 +52,7 @@ class Product(
     companion object {
         fun fromBook(bookProduct: BookProduct): Product {
             return Product(
-                ProductType.BOOK,
+                Type.BOOK,
                 bookProduct.price!!,
                 quantity = 0L,
             ).apply {

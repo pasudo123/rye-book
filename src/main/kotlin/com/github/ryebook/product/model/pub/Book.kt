@@ -1,4 +1,4 @@
-package com.github.ryebook.product.model
+package com.github.ryebook.product.model.pub
 
 import com.github.ryebook.common.error.DomainPolicyException
 import com.github.ryebook.common.model.BaseEntity

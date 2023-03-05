@@ -3,7 +3,7 @@ package com.github.ryebook.product.application
 import com.github.ryebook.common.error.DataNotFoundException
 import com.github.ryebook.product.domain.ProductDomainCreateService
 import com.github.ryebook.product.infra.BookRepository
-import com.github.ryebook.product.model.BookProduct
+import com.github.ryebook.product.model.pub.BookProduct
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 

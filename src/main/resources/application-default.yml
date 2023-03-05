@@ -7,7 +7,6 @@ spring:
     password: rootpass
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:13306/testdb?useSSL=false&allowPublicKeyRetrieval=true&useTimezone=true&serverTimezone=Asia/Seoul
-    ## ?? ?? X
     # hikari:
 
   jpa:
@@ -24,3 +23,6 @@ logging:
   level:
     com.github.ryebook: INFO
     org.hibernate.type.descriptor.sql: TRACE
+
+custom-config:
+  init-data: false

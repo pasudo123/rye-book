@@ -45,6 +45,7 @@ val mockkVersion: String = System.getProperty("version.mocckVersion")
 val springmockkVersion: String = System.getProperty("version.springmockkVersion")
 val testcontainersVersion: String = System.getProperty("version.testcontainerVersion")
 val springStatemachineVersion: String = System.getProperty("version.springStatemachineVersion")
+val querydslVersion: String = System.getProperty("version.querydslVersion")
 
 dependencies {
 
@@ -54,6 +55,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
     runtimeOnly("com.mysql:mysql-connector-j")
+
+    // querydsl
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
+    implementation("com.querydsl:querydsl-jpa:$querydslVersion")
 
     // state-machine
     implementation("org.springframework.statemachine:spring-statemachine-starter")
@@ -66,7 +72,7 @@ dependencies {
     // mock & kotest
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
-    testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
+    // testImplementation("com.ninja-squad:springmockk:$springmockkVersion")
 }
 
 dependencyManagement {
@@ -85,4 +91,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kotlin.sourceSets.main {
+    println("buildDir : $buildDir")
+    // querydsl QClass
+    setBuildDir("$buildDir")
 }
