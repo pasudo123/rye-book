@@ -1,4 +1,16 @@
 ### GET products (book)
-### GET request with environment variables
-GET {{host}}/products/BOOK
+GET {{host}}/products/book
 Accept: application/json
+
+### GET products with page(book)
+GET {{host}}/products/book?page=0&size=3
+Accept: application/json
+
+### PATCH products status
+PATCH {{host}}/products/status
+Content-Type: application/json
+
+{
+  "id": 2,
+  "status": "IN_STOCK"
+}

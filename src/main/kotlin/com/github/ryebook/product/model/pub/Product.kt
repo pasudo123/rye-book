@@ -41,12 +41,28 @@ class Product(
     var book: Book? = null
         protected set
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "product_status", columnDefinition = "VARCHAR(64) comment '상품상태'")
+    var status: Status = Status.OUT_OF_STOCK
+        protected set
+
     enum class Type(desc: String) {
-        BOOK("도서타입")
+        BOOK("도서")
+    }
+
+    enum class Status(desc: String) {
+        RECEIVING_SCHEDULED("입고예정"),
+        UN_AVAILABLE("입고예정없음"),
+        IN_STOCK("재고있음"),
+        OUT_OF_STOCK("재고없음")
     }
 
     fun mapping(book: Book) {
         this.book = book
+    }
+
+    fun update(status: Product.Status) {
+        this.status = status
     }
 
     companion object {

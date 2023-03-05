@@ -37,6 +37,8 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    maven(url = "https://repo.spring.io/snapshot")
+    maven(url = "https://repo.spring.io/milestone")
 }
 
 extra["testcontainersVersion"] = "1.17.6"
@@ -62,7 +64,8 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
 
     // state-machine
-    implementation("org.springframework.statemachine:spring-statemachine-starter")
+//    implementation("org.springframework.statemachine:spring-statemachine-starter")
+//    implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")

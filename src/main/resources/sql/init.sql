@@ -10,9 +10,10 @@ CREATE TABLE books (
 
 CREATE TABLE products (
     id bigint(20) PRIMARY KEY AUTO_INCREMENT,
-    product_type VARCHAR(64) not null,
     quantity bigint not null default 0,
     price bigint not null,
+    product_type VARCHAR(64) not null,
+    product_status VARCHAR(64) not null default 'OUT_OF_STOCK',
     book_id bigint null,
     created_at datetime null,
     modified_at datetime null
