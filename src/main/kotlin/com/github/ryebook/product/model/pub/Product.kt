@@ -43,7 +43,7 @@ class Product(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "product_status", columnDefinition = "VARCHAR(64) comment '상품상태'")
-    var status: Status = Status.OUT_OF_STOCK
+    var status: Status = Status.NEW
         protected set
 
     enum class Type(desc: String) {
@@ -51,10 +51,17 @@ class Product(
     }
 
     enum class Status(desc: String) {
+        NEW("판매등록"),
+        TO_BE_SALE("판매예정"),
+        ON_SALE("판매중"),
+        SALE_END("판매종료"),
+        NO_LONGER_FOR_SALE("더 이상 판매하지 않음"),
+    }
+
+    enum class Event(desc: String) {
         RECEIVING_SCHEDULED("입고예정"),
-        UN_AVAILABLE("입고예정없음"),
         IN_STOCK("재고있음"),
-        OUT_OF_STOCK("재고없음")
+        OUT_OF_STOCK("재고없음"),
     }
 
     fun mapping(book: Book) {

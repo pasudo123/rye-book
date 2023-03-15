@@ -64,8 +64,8 @@ dependencies {
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
 
     // state-machine
-//    implementation("org.springframework.statemachine:spring-statemachine-starter")
-//    implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
+    implementation("org.springframework.statemachine:spring-statemachine-starter")
+    implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
