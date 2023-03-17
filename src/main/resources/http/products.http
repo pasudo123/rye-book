@@ -11,6 +11,6 @@ PATCH {{host}}/products/status
 Content-Type: application/json
 
 {
-  "id": 2,
+  "id": 3,
   "status": "IN_STOCK"
 }

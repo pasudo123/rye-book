@@ -9,6 +9,11 @@ class ProductDto {
         val status: String
     )
 
+    data class RequestsWithEvent(
+        val id: Long,
+        val event: String
+    )
+
     sealed class Response
 
     data class BookProductResponse(

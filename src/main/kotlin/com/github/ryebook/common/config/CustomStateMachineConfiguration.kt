@@ -1,16 +1,16 @@
 package com.github.ryebook.common.config
 
+import com.github.ryebook.product.infra.ProductStateMachineListener
 import com.github.ryebook.product.model.pub.Product
+import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
 import org.springframework.statemachine.config.EnableStateMachineFactory
-import org.springframework.statemachine.config.StateMachineConfigurerAdapter
+import org.springframework.statemachine.config.EnumStateMachineConfigurerAdapter
+import org.springframework.statemachine.config.builders.StateMachineConfigurationConfigurer
 import org.springframework.statemachine.config.builders.StateMachineStateConfigurer
 import org.springframework.statemachine.config.builders.StateMachineTransitionConfigurer
-import org.springframework.statemachine.data.RepositoryState
-import org.springframework.statemachine.data.RepositoryTransition
-import org.springframework.statemachine.data.StateRepository
-import org.springframework.statemachine.data.TransitionRepository
 import java.util.EnumSet
+import javax.annotation.PostConstruct
 
 /**
  * https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/
@@ -18,10 +18,14 @@ import java.util.EnumSet
  */
 @Configuration
 @EnableStateMachineFactory
-class CustomStateMachineConfiguration(
-    private val stateRepository: StateRepository<RepositoryState>,
-    private val transitionRepository: TransitionRepository<RepositoryTransition>
-): StateMachineConfigurerAdapter<Product.Status, Product.Event>() {
+class CustomStateMachineConfiguration : EnumStateMachineConfigurerAdapter<Product.Status, Product.Event>() {
+
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    @PostConstruct
+    fun init() {
+        log.info(":: PostConstruct ::")
+    }
 
     override fun configure(states: StateMachineStateConfigurer<Product.Status, Product.Event>) {
         states.withStates()
@@ -30,11 +34,27 @@ class CustomStateMachineConfiguration(
             .end(Product.Status.TO_BE_SALE)
             .end(Product.Status.ON_SALE)
             .end(Product.Status.SALE_END)
-            .end(Product.Status.NO_LONGER_FOR_SALE)
     }
 
     override fun configure(transitionConfigurer: StateMachineTransitionConfigurer<Product.Status, Product.Event>) {
-        transitionConfigurer.withExternal()
-            .source(Product)
+        transitionConfigurer
+            .withExternal().source(Product.Status.NEW).target(Product.Status.TO_BE_SALE)
+            .event(Product.Event.RECEIVING_CONFIRMED)
+            .and()
+            .withExternal().source(Product.Status.TO_BE_SALE).target(Product.Status.ON_SALE)
+            .event(Product.Event.IN_STOCK)
+            .and()
+            .withExternal().source(Product.Status.ON_SALE).target(Product.Status.SALE_END).event(Product.Event.SOLD_OUT)
+            .and()
+            .withExternal().source(Product.Status.SALE_END).target(Product.Status.ON_SALE).event(Product.Event.IN_STOCK)
+            .and()
+            .withExternal().source(Product.Status.SALE_END).target(Product.Status.TO_BE_SALE)
+            .event(Product.Event.RECEIVING_CONFIRMED)
+    }
+
+    override fun configure(config: StateMachineConfigurationConfigurer<Product.Status, Product.Event>) {
+        config.withConfiguration()
+            .autoStartup(true)
+            .listener(ProductStateMachineListener())
     }
 }

@@ -51,24 +51,23 @@ class Product(
     }
 
     enum class Status(desc: String) {
-        NEW("판매등록"),
+        NEW("신규상태"),
         TO_BE_SALE("판매예정"),
         ON_SALE("판매중"),
         SALE_END("판매종료"),
-        NO_LONGER_FOR_SALE("더 이상 판매하지 않음"),
     }
 
     enum class Event(desc: String) {
-        RECEIVING_SCHEDULED("입고예정"),
-        IN_STOCK("재고있음"),
-        OUT_OF_STOCK("재고없음"),
+        RECEIVING_CONFIRMED("입고확정"),
+        IN_STOCK("재고존재"),
+        SOLD_OUT("품절"),
     }
 
     fun mapping(book: Book) {
         this.book = book
     }
 
-    fun update(status: Product.Status) {
+    fun update(status: Status) {
         this.status = status
     }
 
