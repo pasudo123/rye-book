@@ -13,6 +13,7 @@ import java.util.EnumSet
 import javax.annotation.PostConstruct
 
 /**
+ * https://github.com/lijingyao/state-machine/blob/master/src/main/java/com/lijingyao/stateMachine/OrderPersistStateChangeListener.java
  * https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/
  * https://www.youtube.com/watch?v=A-dVgRV5-Bw&ab_channel=SpringFrameworkGuru
  */

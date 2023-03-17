@@ -18,7 +18,7 @@ import javax.persistence.Table
 class Product(
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type", columnDefinition = "VARCHAR(64) comment '상품타입'")
-    private val type: Type,
+    val type: Type,
     price: Long,
     quantity: Long,
 ) : BaseEntity() {
@@ -37,8 +37,13 @@ class Product(
         protected set
 
     @JoinColumn(name = "book_id", nullable = true)
-    @OneToOne(targetEntity = Book::class, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(targetEntity = Book::class, fetch = FetchType.LAZY, optional = true)
     var book: Book? = null
+        protected set
+
+    @JoinColumn(name = "ticket_id", nullable = true)
+    @OneToOne(targetEntity = Ticket::class, fetch = FetchType.LAZY, optional = true)
+    var ticket: Ticket? = null
         protected set
 
     @Enumerated(EnumType.STRING)
@@ -47,7 +52,8 @@ class Product(
         protected set
 
     enum class Type(desc: String) {
-        BOOK("도서")
+        BOOK("도서"),
+        TICKET("티켓")
     }
 
     enum class Status(desc: String) {
@@ -67,8 +73,20 @@ class Product(
         this.book = book
     }
 
+    fun mapping(ticket: Ticket) {
+        this.ticket = ticket
+    }
+
     fun update(status: Status) {
         this.status = status
+    }
+
+    fun isBook(): Boolean {
+        return this.type == Type.BOOK
+    }
+
+    fun isTicket(): Boolean {
+        return this.type == Type.TICKET
     }
 
     companion object {
@@ -79,6 +97,16 @@ class Product(
                 quantity = 0L,
             ).apply {
                 this.mapping(bookProduct.book)
+            }
+        }
+
+        fun fromTicket(ticketProduct: TicketProduct): Product {
+            return Product(
+                Type.TICKET,
+                ticketProduct.price!!,
+                quantity = 0L,
+            ).apply {
+                this.mapping(ticketProduct.ticket)
             }
         }
     }

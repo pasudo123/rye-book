@@ -1,9 +1,13 @@
 ### GET products (book)
-GET {{host}}/products/book
+GET {{host}}/products?type=book
 Accept: application/json
 
 ### GET products with page(book)
-GET {{host}}/products/book?page=0&size=3
+GET {{host}}/products?type=book&page=0&size=3
+Accept: application/json
+
+### GET products by id
+GET {{host}}/products/30
 Accept: application/json
 
 ### PATCH products status

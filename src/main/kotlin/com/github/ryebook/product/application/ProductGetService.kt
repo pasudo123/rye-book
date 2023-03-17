@@ -1,5 +1,6 @@
 package com.github.ryebook.product.application
 
+import com.github.ryebook.common.error.DataNotFoundException
 import com.github.ryebook.product.domain.ProductDomainGetService
 import com.github.ryebook.product.model.con.Merchandise
 import com.github.ryebook.product.model.pub.Product
@@ -13,5 +14,9 @@ class ProductGetService(
 
     fun findProductsWithPageable(type: Product.Type, pageable: Pageable): List<Merchandise> {
         return productDomainGetService.findAllWithPageable(type, pageable)
+    }
+
+    fun findByIdOrThrow(id: Long): Merchandise {
+        return productDomainGetService.findByIdOrNull(id) ?: throw DataNotFoundException("product[$id] 는 존재하지 않습니다.")
     }
 }

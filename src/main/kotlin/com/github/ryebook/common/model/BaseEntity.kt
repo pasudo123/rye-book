@@ -15,12 +15,12 @@ import javax.persistence.MappedSuperclass
 abstract class BaseEntity : Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    @CreatedDate
-    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false, updatable = false)
-    var createdAt: LocalDateTime? = null
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     @LastModifiedDate
     @Column(name = "modified_at", columnDefinition = "DATETIME", nullable = false, updatable = true)
     var modifiedAt: LocalDateTime? = null
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    @CreatedDate
+    @Column(name = "created_at", columnDefinition = "DATETIME", nullable = false, updatable = false)
+    var createdAt: LocalDateTime? = null
 }
