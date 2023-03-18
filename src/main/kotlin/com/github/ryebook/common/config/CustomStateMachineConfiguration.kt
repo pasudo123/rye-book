@@ -1,6 +1,6 @@
 package com.github.ryebook.common.config
 
-import com.github.ryebook.product.infra.ProductStateMachineListener
+import com.github.ryebook.product.domain.ProductStateMachineListener
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration

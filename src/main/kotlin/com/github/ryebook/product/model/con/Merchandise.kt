@@ -5,15 +5,9 @@ import com.github.ryebook.product.model.pub.Product
 /**
  * 이용자 입장에서 상품
  */
-sealed class Merchandise {
-    fun toBook(): BookMerchandise {
-        return this as BookMerchandise
-    }
-
-    fun toTicket(): TicketMerchandise {
-        return this as TicketMerchandise
-    }
-
+sealed class Merchandise(
+    open val product: Product
+) {
     companion object {
         fun from(product: Product): Merchandise {
             return when (product.type) {

@@ -1,4 +1,4 @@
-package com.github.ryebook.product.infra
+package com.github.ryebook.product.domain
 
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory

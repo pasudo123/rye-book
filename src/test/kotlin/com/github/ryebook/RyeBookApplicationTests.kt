@@ -1,12 +1,12 @@
 package com.github.ryebook
 
 import org.junit.jupiter.api.Test
-import org.springframework.boot.test.context.SpringBootTest
 
-@SpringBootTest
+@IntegrationSupport
 class RyeBookApplicationTests {
 
     @Test
     fun contextLoads() {
+        println("sample")
     }
 }

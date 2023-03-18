@@ -3,8 +3,8 @@ package com.github.ryebook.product.api
 import com.github.ryebook.product.api.dto.ProductDto
 import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toResponse
 import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toResponses
-import com.github.ryebook.product.application.ProductEventHandleService
 import com.github.ryebook.product.application.ProductGetService
+import com.github.ryebook.product.domain.ProductEventHandleService
 import com.github.ryebook.product.model.pub.Product
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -44,10 +44,12 @@ class ProductController(
     }
 
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @PatchMapping("event")
+    @PatchMapping("{id}/event")
     fun handleEvent(
+        @PathVariable("id") id: Long,
         @RequestBody request: ProductDto.RequestEvent
     ) {
-        productEventHandleService.handleEventWithId(request)
+        val merchandise = productGetService.findByIdOrThrow(id)
+        productEventHandleService.handleEvent(merchandise.product, Product.Event.valueOf(request.event))
     }
 }

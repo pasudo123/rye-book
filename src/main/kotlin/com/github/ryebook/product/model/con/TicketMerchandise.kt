@@ -8,8 +8,8 @@ import com.github.ryebook.product.model.pub.Ticket
  */
 class TicketMerchandise(
     val ticket: Ticket,
-    val product: Product
-) : Merchandise() {
+    override val product: Product
+) : Merchandise(product) {
 
     companion object {
         fun from(product: Product): TicketMerchandise {

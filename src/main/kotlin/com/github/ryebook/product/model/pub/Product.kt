@@ -77,8 +77,8 @@ class Product(
         this.ticket = ticket
     }
 
-    fun update(status: Status) {
-        this.status = status
+    fun changeStatus(status: Status? = null) {
+        status?.let { this.status = status }
     }
 
     fun isBook(): Boolean {

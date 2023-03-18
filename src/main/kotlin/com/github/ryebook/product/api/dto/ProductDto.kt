@@ -9,13 +9,7 @@ import java.time.LocalDateTime
 
 class ProductDto {
 
-    data class RequestWithStatus(
-        val id: Long,
-        val status: String
-    )
-
     data class RequestEvent(
-        val id: Long,
         val event: String
     )
 

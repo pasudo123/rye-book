@@ -12,4 +12,8 @@ class ProductDomainCreateService(
     fun create(products: List<Product>) {
         productRepository.saveAll(products)
     }
+
+    fun create(product: Product) {
+        productRepository.save(product)
+    }
 }
