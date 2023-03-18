@@ -1,6 +1,7 @@
 package com.github.ryebook
 
 import org.slf4j.LoggerFactory
+import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.stereotype.Component
 import org.testcontainers.containers.MySQLContainer
 import org.testcontainers.junit.jupiter.Container
@@ -9,11 +10,8 @@ import org.testcontainers.utility.DockerImageName
 import javax.annotation.PostConstruct
 import javax.annotation.PreDestroy
 
-@Component(value = "MysqlTestContainer")
-@Testcontainers
-class MysqlTestContainer {
-
-    private val log = LoggerFactory.getLogger(javaClass)
+@TestConfiguration
+class MysqlTestContainerConfiguration {
 
     companion object {
         private val mysqlImageName = if (System.getProperty("os.arch") == "aarch64") {
@@ -36,21 +34,32 @@ class MysqlTestContainer {
             }
     }
 
-    @PostConstruct
-    fun init() {
-        log.info("@@@@@ [started] mysql container @@@@@")
-        log.info("@@@@@ imageName : ${MYSQL_CONTAINER.dockerImageName}")
-        log.info("@@@@@ databaseName : ${MYSQL_CONTAINER.databaseName}")
-        log.info("@@@@@ username : ${MYSQL_CONTAINER.username}")
-        log.info("@@@@@ password : ${MYSQL_CONTAINER.password}")
-        log.info("@@@@@ jdbcUrl : ${MYSQL_CONTAINER.jdbcUrl}")
-        log.info("@@@@@ exposedPorts : ${MYSQL_CONTAINER.exposedPorts}")
-    }
+    @Component(value = "MysqlTestContainer")
+    @Testcontainers
+    class MysqlTestContainer {
 
-    @PreDestroy
-    fun beforeDestroy() {
-        MYSQL_CONTAINER.stop()
-        log.info("@@@@@ [stopped] mysql container @@@@@")
+        private val log = LoggerFactory.getLogger(javaClass)
+
+        @PostConstruct
+        fun init() {
+            log.info("@@@@@ [started] mysql container @@@@@")
+            log.info("@@@@@ imageName : ${MYSQL_CONTAINER.dockerImageName}")
+            log.info("@@@@@ databaseName : ${MYSQL_CONTAINER.databaseName}")
+            log.info("@@@@@ username : ${MYSQL_CONTAINER.username}")
+            log.info("@@@@@ password : ${MYSQL_CONTAINER.password}")
+            log.info("@@@@@ jdbcUrl : ${MYSQL_CONTAINER.jdbcUrl}")
+            log.info("@@@@@ exposedPorts : ${MYSQL_CONTAINER.exposedPorts}")
+            System.setProperty("DB_URL", MYSQL_CONTAINER.jdbcUrl)
+            System.setProperty("DB_DRIVER_NAME", MYSQL_CONTAINER.driverClassName)
+            System.setProperty("DB_USERNAME", MYSQL_CONTAINER.username)
+            System.setProperty("DB_PASSWORD", MYSQL_CONTAINER.password)
+        }
+
+        @PreDestroy
+        fun beforeDestroy() {
+            MYSQL_CONTAINER.stop()
+            log.info("@@@@@ [stopped] mysql container @@@@@")
+        }
     }
 
     // https://github.com/testcontainers/testcontainers-java/issues/318

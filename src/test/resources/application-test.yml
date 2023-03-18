@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  # test container 에 적혀있음
+  username: empty
+  password: empty
+  driver-class-name: empty
+  url: empty
+
+  main:
+    allow-bean-definition-overriding: true
+
+logging:
+  level:
+    com.github.ryebook: INFO
+    # org.hibernate.type.descriptor.sql: TRACE
+
+custom-config:
+  init-data: true

@@ -7,14 +7,13 @@ GET {{host}}/products?type=book&page=0&size=3
 Accept: application/json
 
 ### GET products by id
-GET {{host}}/products/30
+GET {{host}}/products/3
 Accept: application/json
 
 ### PATCH products status
-PATCH {{host}}/products/status
+PATCH {{host}}/products/3/event
 Content-Type: application/json
 
 {
-  "id": 3,
-  "status": "IN_STOCK"
+  "event": "IN_STOCK"
 }

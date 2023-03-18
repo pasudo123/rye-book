@@ -1,6 +1,6 @@
 package com.github.ryebook
 
-import com.github.ryebook.MysqlTestContainer.Companion.MYSQL_CONTAINER
+import com.github.ryebook.MysqlTestContainerConfiguration.Companion.MYSQL_CONTAINER
 import org.springframework.boot.jdbc.DataSourceBuilder
 import org.springframework.boot.test.context.TestConfiguration
 import org.springframework.context.annotation.Bean
@@ -9,12 +9,14 @@ import org.springframework.orm.jpa.JpaTransactionManager
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.vendor.Database
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter
+import org.springframework.statemachine.config.EnableStateMachine
 import org.springframework.transaction.PlatformTransactionManager
 import java.util.Properties
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 
 @TestConfiguration
+@EnableStateMachine
 class TestDataSourceConfiguration {
 
     @Bean
@@ -47,7 +49,7 @@ class TestDataSourceConfiguration {
         return LocalContainerEntityManagerFactoryBean().apply {
             this.jpaVendorAdapter = vendorAdapter
             this.dataSource = dataSource()
-            this.setPackagesToScan("com.github.ryebook")
+            this.setPackagesToScan("com.github.ryebook", "org.springframework.statemachine.data")
             this.setJpaProperties(properties)
         }
     }
