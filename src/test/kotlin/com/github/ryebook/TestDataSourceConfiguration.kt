@@ -41,7 +41,7 @@ class TestDataSourceConfiguration {
 
         val properties = Properties().apply {
             this.setProperty("hibernate.show_sql", "true")
-            this.setProperty("hibernate.format_sql", "true")
+            this.setProperty("hibernate.format_sql", "false")
             this.setProperty("hibernate.hbm2ddl.auto", "create-drop")
             this.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect")
         }

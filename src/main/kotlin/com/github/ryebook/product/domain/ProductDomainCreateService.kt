@@ -9,11 +9,11 @@ class ProductDomainCreateService(
     private val productRepository: ProductRepository
 ) {
 
-    fun create(products: List<Product>) {
+    fun createOrPatch(products: List<Product>) {
         productRepository.saveAll(products)
     }
 
-    fun create(product: Product) {
+    fun createOrPatch(product: Product) {
         productRepository.save(product)
     }
 }

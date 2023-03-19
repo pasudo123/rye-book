@@ -1,6 +1,7 @@
 package com.github.ryebook.product.domain
 
 import com.github.ryebook.IntegrationTestSupport
+import com.github.ryebook.product.domain.sm.ProductDomainEventService
 import com.github.ryebook.product.model.pub.Product
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
@@ -13,7 +14,7 @@ import org.springframework.data.domain.Pageable
 @DisplayName("productEventHandleService 는")
 class ProductEventHandleServiceTest(
     private val productDomainGetService: ProductDomainGetService,
-    private val productEventHandleService: ProductEventHandleService,
+    private val productEventHandleService: ProductDomainEventService,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

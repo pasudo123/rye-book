@@ -4,7 +4,7 @@ import com.github.ryebook.product.api.dto.ProductDto
 import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toResponse
 import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toResponses
 import com.github.ryebook.product.application.ProductGetService
-import com.github.ryebook.product.domain.ProductEventHandleService
+import com.github.ryebook.product.domain.sm.ProductDomainEventHandler
 import com.github.ryebook.product.model.pub.Product
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("products")
 class ProductController(
     private val productGetService: ProductGetService,
-    private val productEventHandleService: ProductEventHandleService
+    private val productDomainEventHandler: ProductDomainEventHandler
 ) {
 
     @GetMapping
@@ -50,6 +50,6 @@ class ProductController(
         @RequestBody request: ProductDto.RequestEvent
     ) {
         val merchandise = productGetService.findByIdOrThrow(id)
-        productEventHandleService.handleEvent(merchandise.product, Product.Event.valueOf(request.event))
+        productDomainEventHandler.sendEventWithProduct(merchandise.product, Product.Event.valueOf(request.event))
     }
 }

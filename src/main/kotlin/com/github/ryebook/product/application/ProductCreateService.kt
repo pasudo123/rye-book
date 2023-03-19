@@ -27,13 +27,13 @@ class ProductCreateService(
             Product.Type.BOOK -> {
                 val books = bookRepository.findAllByRegister(false)
                 val bookProducts = books.map { BookProduct.from(it, price) }
-                productDomainCreateService.create(bookProducts.map { Product.fromBook(it) })
+                productDomainCreateService.createOrPatch(bookProducts.map { Product.fromBook(it) })
                 books.forEach { it.registered() }
             }
             Product.Type.TICKET -> {
                 val tickets = ticketRepository.findAllByRegister(false)
                 val ticketProducts = tickets.map { TicketProduct.from(it, price) }
-                productDomainCreateService.create(ticketProducts.map { Product.fromTicket(it) })
+                productDomainCreateService.createOrPatch(ticketProducts.map { Product.fromTicket(it) })
                 tickets.forEach { it.registered() }
             }
         }

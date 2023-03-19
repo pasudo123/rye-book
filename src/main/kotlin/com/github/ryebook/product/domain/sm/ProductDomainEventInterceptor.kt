@@ -1,7 +1,8 @@
-package com.github.ryebook.product.domain
+package com.github.ryebook.product.domain.sm
 
-import com.github.ryebook.product.domain.ProductEventHandleService.Companion.EMPTY_PRODUCT_ID
-import com.github.ryebook.product.domain.ProductEventHandleService.Companion.PRODUCT_ID_HEADER
+import com.github.ryebook.product.domain.ProductDomainCreateService
+import com.github.ryebook.product.domain.ProductDomainGetService
+import com.github.ryebook.product.domain.sm.ProductHeaders.getProductHeaderIdOrThrow
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory
 import org.springframework.messaging.Message
@@ -13,14 +14,14 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-@Transactional
-class ProductStateMachineInterceptor(
+class ProductDomainEventInterceptor(
     private val productDomainGetService: ProductDomainGetService,
     private val productDomainCreateService: ProductDomainCreateService
 ) : StateMachineInterceptorAdapter<Product.Status, Product.Event>() {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
+    @Transactional
     override fun preStateChange(
         state: State<Product.Status, Product.Event>?,
         message: Message<Product.Event>?,
@@ -28,10 +29,23 @@ class ProductStateMachineInterceptor(
         stateMachine: StateMachine<Product.Status, Product.Event>?,
         rootStateMachine: StateMachine<Product.Status, Product.Event>?
     ) {
-        log.info("@@@ preStateChange : state?.id[${state?.id}]")
-        val productId = message?.headers?.getOrDefault(PRODUCT_ID_HEADER, EMPTY_PRODUCT_ID).toString()
-        val product = productDomainGetService.findByIdOrNull(productId.toLong()) ?: return
-        product.changeStatus(state?.id)
-        productDomainCreateService.create(product)
+
+        if (state.isNull()) {
+            log.warn("@@@ preStateChanged : state is null")
+            return
+        }
+
+        log.warn("@@@ preStateChanged : state.id[${state!!.id}]")
+
+        val productId = message?.headers?.getProductHeaderIdOrThrow() ?: return
+        val currentProduct = productDomainGetService.findByIdOrNull(productId)?.apply {
+            this.changeStatus(state.id)
+        } ?: return
+
+        productDomainCreateService.createOrPatch(currentProduct)
+    }
+
+    private fun State<Product.Status, Product.Event>?.isNull(): Boolean {
+        return this == null
     }
 }

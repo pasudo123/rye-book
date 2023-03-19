@@ -1,4 +1,4 @@
-package com.github.ryebook.product.config
+package com.github.ryebook.product.domain.sm.action
 
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory
@@ -7,7 +7,7 @@ import org.springframework.statemachine.action.Action
 import org.springframework.stereotype.Component
 
 @Component
-class ProductCustomTransitionAction : Action<Product.Status, Product.Event> {
+class ProductCustomActionErrorHandler : Action<Product.Status, Product.Event> {
 
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -16,6 +16,6 @@ class ProductCustomTransitionAction : Action<Product.Status, Product.Event> {
             return
         }
 
-        log.info("@@@ transition-action : [${context.source?.id}] -> [${context.target?.id}] / receive-event[${context.event}]")
+        log.error("@@@ action error handle : current-state[${context.stateMachine?.state?.id}] / receive-event[${context.event}]")
     }
 }
