@@ -2,6 +2,7 @@ package com.github.ryebook.product.config
 
 import com.github.ryebook.product.domain.sm.action.ProductCustomActionErrorHandler
 import com.github.ryebook.product.domain.sm.action.ProductCustomActionHandler
+import com.github.ryebook.product.domain.sm.guard.ProductCustomGuard
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Configuration
@@ -23,6 +24,7 @@ import javax.annotation.PostConstruct
 @Configuration
 @EnableStateMachineFactory
 class CustomStateMachineConfiguration(
+    private val productCustomGuard: ProductCustomGuard,
     private val productCustomActionHandler: ProductCustomActionHandler,
     private val productCustomActionErrorHandler: ProductCustomActionErrorHandler,
 ) : EnumStateMachineConfigurerAdapter<Product.Status, Product.Event>() {
@@ -52,30 +54,35 @@ class CustomStateMachineConfiguration(
             .target(Product.Status.TO_BE_SALE)
             .event(Product.Event.RECEIVING_CONFIRMED)
             .action(Actions.errorCallingAction(productCustomActionHandler, productCustomActionErrorHandler))
+            .guard(productCustomGuard)
             .and()
             .withExternal()
             .source(Product.Status.TO_BE_SALE)
             .target(Product.Status.ON_SALE)
             .event(Product.Event.IN_STOCK)
             .action(Actions.errorCallingAction(productCustomActionHandler, productCustomActionErrorHandler))
+            .guard(productCustomGuard)
             .and()
             .withExternal()
             .source(Product.Status.ON_SALE)
             .target(Product.Status.SALE_END)
             .event(Product.Event.SOLD_OUT)
             .action(Actions.errorCallingAction(productCustomActionHandler, productCustomActionErrorHandler))
+            .guard(productCustomGuard)
             .and()
             .withExternal()
             .source(Product.Status.SALE_END)
             .target(Product.Status.ON_SALE)
             .event(Product.Event.IN_STOCK)
             .action(Actions.errorCallingAction(productCustomActionHandler, productCustomActionErrorHandler))
+            .guard(productCustomGuard)
             .and()
             .withExternal()
             .source(Product.Status.SALE_END)
             .target(Product.Status.TO_BE_SALE)
             .event(Product.Event.RECEIVING_CONFIRMED)
             .action(Actions.errorCallingAction(productCustomActionHandler, productCustomActionErrorHandler))
+            .guard(productCustomGuard)
     }
 
     override fun configure(config: StateMachineConfigurationConfigurer<Product.Status, Product.Event>) {

@@ -8,6 +8,6 @@ object ProductHeaders {
     const val PRODUCT_ID_HEADER = "product_header_id"
 
     fun MessageHeaders?.getProductHeaderIdOrThrow(): Long {
-        return this?.get(PRODUCT_ID_HEADER, Long::class.java) ?: throw DataNotFoundException("$PRODUCT_ID_HEADER 가 존재하지 않습니다.")
+        return this?.get(PRODUCT_ID_HEADER).toString().toLongOrNull() ?: throw DataNotFoundException("$PRODUCT_ID_HEADER 가 존재하지 않습니다.")
     }
 }

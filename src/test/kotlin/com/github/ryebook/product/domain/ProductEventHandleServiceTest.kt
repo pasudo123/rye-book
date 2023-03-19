@@ -33,10 +33,34 @@ class ProductEventHandleServiceTest(
         val firstBook = books.first()
         firstBook.status shouldBe Product.Status.NEW
 
-        // 입고에정 이벤트
+        // 입고예정 이벤트
         productEventHandleService.handleEvent(firstBook, Product.Event.RECEIVING_CONFIRMED)
 
         val actual = productDomainGetService.findByIdOrNull(firstBook.id!!)!!
         actual.status shouldBe Product.Status.TO_BE_SALE
+    }
+
+    /**
+     * StateMachineConfiguration 에서 https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/#statemachine-config-states 내용참고
+     * initial, states, end 를 잘 써야하는듯.
+     */
+    @Test
+    fun `product 의 상태를 ON_SALE 로 변경한다`() {
+        val firstBook = books.last()
+        firstBook.status shouldBe Product.Status.NEW
+
+        // 입고예정 이벤트
+        productEventHandleService.handleEvent(firstBook, Product.Event.RECEIVING_CONFIRMED)
+        val currentProduct = productDomainGetService.findByIdOrNull(firstBook.id!!)!!
+        currentProduct.status shouldBe Product.Status.TO_BE_SALE
+
+        println("==> 판매예정 변경완료 ==>==>")
+
+        // 재고존재 이벤트
+
+        productEventHandleService.handleEvent(currentProduct, Product.Event.IN_STOCK)
+        productDomainGetService.findByIdOrNull(currentProduct.id!!)!!.status shouldBe Product.Status.ON_SALE
+
+        println("==> 판매중 변경완료 ==>==>")
     }
 }

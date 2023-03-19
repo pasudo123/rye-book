@@ -13,6 +13,7 @@ class ProductCustomGuard : Guard<Product.Status, Product.Event> {
 
     override fun evaluate(context: StateContext<Product.Status, Product.Event>?): Boolean {
         log.info("@@@ guard")
+        // true 이벤트가 동작한다.
         return true
     }
 }
