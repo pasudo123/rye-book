@@ -14,7 +14,6 @@ spring:
 logging:
   level:
     com.github.ryebook: INFO
-    # org.hibernate.type.descriptor.sql: TRACE
 
 custom-config:
   init-data: true

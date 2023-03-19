@@ -6,6 +6,7 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 
 @IntegrationTestSupport
@@ -15,6 +16,7 @@ class ProductEventHandleServiceTest(
     private val productEventHandleService: ProductEventHandleService,
 ) {
 
+    private val log = LoggerFactory.getLogger(javaClass)
     private lateinit var books: List<Product>
     private lateinit var tickets: List<Product>
 
@@ -22,6 +24,7 @@ class ProductEventHandleServiceTest(
     fun beforeEach() {
         this.books = productDomainGetService.findAllWithPageable(Product.Type.BOOK, Pageable.ofSize(10))
         this.tickets = productDomainGetService.findAllWithPageable(Product.Type.TICKET, Pageable.ofSize(10))
+        log.info("============================================================")
     }
 
     @Test

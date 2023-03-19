@@ -21,28 +21,28 @@ class ProductEventHandleService(
 
     fun handleEvent(product: Product, productEvent: Product.Event) {
         val stateMachine = product.buildStateMachine()
-        stateMachine.sendEvent(product, productEvent)
+        stateMachine.sendEventWithMessage(product, productEvent)
     }
 
-    private fun StateMachine<Product.Status, Product.Event>.sendEvent(product: Product, productEvent: Product.Event) {
+    private fun StateMachine<Product.Status, Product.Event>.sendEventWithMessage(product: Product, productEvent: Product.Event) {
         val message = MessageBuilder.withPayload(productEvent)
             .setHeader(PRODUCT_ID_HEADER, product.id)
             .build()
 
-        this.sendEvent(Mono.just(message)).blockFirst()
+        this.sendEvent(Mono.just(message)).subscribe()
     }
 
     private fun Product.buildStateMachine(): StateMachine<Product.Status, Product.Event> {
         val stateMachine = productStateMachineFactory.getStateMachine(this.id.toString())
 
-        stateMachine.stopReactively().block()
+        stateMachine.stopReactively().subscribe()
         stateMachine.stateMachineAccessor.doWithAllRegions { access ->
             access.addStateMachineInterceptor(productStateMachineInterceptor)
             access.resetStateMachineReactively(
                 DefaultStateMachineContext(this.status, null, null, null)
-            ).block()
+            ).subscribe()
         }
-        stateMachine.startReactively().block()
+        stateMachine.startReactively().subscribe()
 
         return stateMachine
     }

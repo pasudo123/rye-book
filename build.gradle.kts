@@ -67,6 +67,12 @@ dependencies {
     implementation("org.springframework.statemachine:spring-statemachine-starter")
     implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
 
+    // coroutine & reactive
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.testcontainers:junit-jupiter")

@@ -4,8 +4,8 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
 import org.springframework.test.context.ActiveProfiles
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestConstructor
 import org.springframework.transaction.annotation.Transactional
 
@@ -24,5 +24,5 @@ annotation class TestEnvironment
 @Retention(AnnotationRetention.RUNTIME)
 @Transactional
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ContextConfiguration(classes = [TestDataSourceConfiguration::class, MysqlTestContainerConfiguration::class])
+@Import(value = [TestDataSourceConfiguration::class, MysqlTestContainerConfiguration::class])
 annotation class IntegrationTestSupport

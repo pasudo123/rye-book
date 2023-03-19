@@ -28,10 +28,10 @@ class ProductStateMachineInterceptor(
         stateMachine: StateMachine<Product.Status, Product.Event>?,
         rootStateMachine: StateMachine<Product.Status, Product.Event>?
     ) {
+        log.info("@@@ preStateChange : state?.id[${state?.id}]")
         val productId = message?.headers?.getOrDefault(PRODUCT_ID_HEADER, EMPTY_PRODUCT_ID).toString()
         val product = productDomainGetService.findByIdOrNull(productId.toLong()) ?: return
         product.changeStatus(state?.id)
         productDomainCreateService.create(product)
-        log.info("@@@ preStateChange Completed : productId[$productId], to change state[${state?.id}]")
     }
 }
