@@ -1,5 +1,6 @@
 package com.github.ryebook.product.domain.sm
 
+import com.github.ryebook.common.error.SystemStateChangeException
 import com.github.ryebook.product.domain.ProductDomainCreateService
 import com.github.ryebook.product.domain.ProductDomainGetService
 import com.github.ryebook.product.domain.sm.ProductHeaders.getProductHeaderIdOrThrow
@@ -12,6 +13,7 @@ import org.springframework.statemachine.support.StateMachineInterceptorAdapter
 import org.springframework.statemachine.transition.Transition
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import java.lang.Exception
 
 @Component
 class ProductDomainEventInterceptor(
@@ -42,10 +44,23 @@ class ProductDomainEventInterceptor(
             this.changeStatus(state.id)
         } ?: return
 
-        productDomainCreateService.createOrPatch(currentProduct)
+        // dirty checking
+        // productDomainCreateService.createOrPatch(currentProduct)
     }
 
     private fun State<Product.Status, Product.Event>?.isNull(): Boolean {
         return this == null
+    }
+
+    override fun stateMachineError(
+        stateMachine: StateMachine<Product.Status, Product.Event>?,
+        exception: Exception?
+    ): Exception {
+        if (stateMachine == null || exception == null) {
+            throw SystemStateChangeException("스테이트 머신에 문제가 발생했습니다. : state-machine[$stateMachine], exception[$exception]")
+        }
+
+        log.error("@@@ stateMachineError : state.id[${stateMachine.state.id}]")
+        throw SystemStateChangeException("스테이트 머신에 문제가 발생 : ${exception.message}")
     }
 }

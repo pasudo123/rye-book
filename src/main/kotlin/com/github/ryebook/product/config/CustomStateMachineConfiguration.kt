@@ -33,7 +33,7 @@ class CustomStateMachineConfiguration(
 
     @PostConstruct
     fun init() {
-        log.info(":: PostConstruct ::")
+        log.info(":: StateMachineConfiguration PostConstruct ::")
     }
 
     override fun configure(states: StateMachineStateConfigurer<Product.Status, Product.Event>) {
@@ -41,10 +41,6 @@ class CustomStateMachineConfiguration(
             // 초기화 시점
             .initial(Product.Status.NEW)
             .states(EnumSet.allOf(Product.Status::class.java))
-            // 최종적 상태값
-            .end(Product.Status.TO_BE_SALE)
-            .end(Product.Status.ON_SALE)
-            .end(Product.Status.SALE_END)
     }
 
     override fun configure(transitionConfigurer: StateMachineTransitionConfigurer<Product.Status, Product.Event>) {

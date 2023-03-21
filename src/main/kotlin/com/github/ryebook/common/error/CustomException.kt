@@ -11,3 +11,7 @@ class DomainPolicyException(
 class DataNotFoundException(
     override val message: String
 ) : CustomException(message)
+
+class SystemStateChangeException(
+    override val message: String
+) : CustomException(message)
