@@ -43,6 +43,11 @@ class CustomStateMachineConfiguration(
             .states(EnumSet.allOf(Product.Status::class.java))
     }
 
+    /**
+     * event 수행 시, source 랑 target 에 맞는 데이터가 있어야 한다. 그렇지 않으면 sendEvent() 메소드가 수행 안됨
+     * ProductDomainEventHandler.kt 참고 : sendEvent() 내부에서 denied 처리가 된다.
+     * AbstractStateMachine 클래스의 acceptEvent() 쪽에서 처리가 되는걸로 보임
+     */
     override fun configure(transitionConfigurer: StateMachineTransitionConfigurer<Product.Status, Product.Event>) {
         transitionConfigurer
             .withExternal()

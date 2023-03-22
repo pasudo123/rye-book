@@ -25,6 +25,7 @@ spring:
 logging:
   level:
     com.github.ryebook: INFO
+    org.springframework.statemachine: DEBUG
     # org.hibernate.type.descriptor.sql: TRACE
 
 custom-config:

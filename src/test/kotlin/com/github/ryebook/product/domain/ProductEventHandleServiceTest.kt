@@ -1,14 +1,20 @@
 package com.github.ryebook.product.domain
 
 import com.github.ryebook.IntegrationTestSupport
+import com.github.ryebook.common.error.SystemStateChangeException
 import com.github.ryebook.product.domain.sm.ProductDomainEventService
 import com.github.ryebook.product.model.pub.Product
+import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.string.shouldContain
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
+import reactor.test.StepVerifier
+import reactor.test.subscriber.TestSubscriber
 
 @IntegrationTestSupport
 @DisplayName("productEventHandleService 는")
@@ -62,5 +68,23 @@ class ProductEventHandleServiceTest(
         productDomainGetService.findByIdOrNull(currentProduct.id!!)!!.status shouldBe Product.Status.ON_SALE
 
         println("==> 판매중 변경완료 ==>==>")
+    }
+
+    @Test
+    fun `product 의 상태값을 TO_BE_SALE 에서 TO_BE_SALE 로 변경 시 익셉션이 발생한다`() {
+
+        val firstBook = books.last()
+        firstBook.status shouldBe Product.Status.NEW
+        productEventHandleService.handleEvent(firstBook, Product.Event.RECEIVING_CONFIRMED)
+        val currentProduct = productDomainGetService.findByIdOrNull(firstBook.id!!)!!
+
+        // when
+        val actual  = shouldThrow<SystemStateChangeException> {
+            log.info("@@@ shouldThrow =================================================")
+            productEventHandleService.handleEvent(currentProduct, Product.Event.RECEIVING_CONFIRMED)
+        }
+
+        // then
+        actual.message shouldContain "요청 상태값"
     }
 }

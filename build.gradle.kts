@@ -48,6 +48,7 @@ val springmockkVersion: String = System.getProperty("version.springmockkVersion"
 val testcontainersVersion: String = System.getProperty("version.testcontainerVersion")
 val springStatemachineVersion: String = System.getProperty("version.springStatemachineVersion")
 val querydslVersion: String = System.getProperty("version.querydslVersion")
+val reactorTestVersion: String = System.getProperty("version.reactorTestVersion")
 
 dependencies {
 
@@ -88,6 +89,10 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:mysql:$testcontainersVersion")
+
+    // reactor test
+    // https://mvnrepository.com/artifact/io.projectreactor/reactor-test
+    testImplementation("io.projectreactor:reactor-test:$reactorTestVersion")
 }
 
 dependencyManagement {
