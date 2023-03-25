@@ -16,13 +16,15 @@ import java.util.EnumSet
 import javax.annotation.PostConstruct
 
 /**
- * https://github.com/lijingyao/state-machine/blob/master/src/main/java/com/lijingyao/stateMachine/OrderPersistStateChangeListener.java
  * https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/#statemachine-examples-persist
  * https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/
- * https://www.youtube.com/watch?v=A-dVgRV5-Bw&ab_channel=SpringFrameworkGuru
+ */
+/**
+ * - contextEvents = false : 스프링 컨텍스트를 사용하지 않고, 별도 StateMachineListener 의 이벤트 방식을 이용
+ * (https://docs.spring.io/spring-statemachine/docs/3.2.0/reference/#limitations-and-problems)
  */
 @Configuration
-@EnableStateMachineFactory
+@EnableStateMachineFactory(contextEvents = false)
 class CustomStateMachineConfiguration(
     private val productCustomGuard: ProductCustomGuard,
     private val productCustomActionHandler: ProductCustomActionHandler,

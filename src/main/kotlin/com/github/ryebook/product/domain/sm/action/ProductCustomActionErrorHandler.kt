@@ -13,6 +13,7 @@ class ProductCustomActionErrorHandler : Action<Product.Status, Product.Event> {
 
     override fun execute(context: StateContext<Product.Status, Product.Event>?) {
         if (context == null) {
+            log.error("@@@ action error handle : context is null")
             return
         }
 

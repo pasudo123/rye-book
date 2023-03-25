@@ -1,7 +1,6 @@
 package com.github.ryebook.product.domain.sm
 
 import com.github.ryebook.common.error.SystemStateChangeException
-import com.github.ryebook.product.domain.ProductDomainCreateService
 import com.github.ryebook.product.domain.ProductDomainGetService
 import com.github.ryebook.product.domain.sm.ProductHeaders.getProductHeaderIdOrThrow
 import com.github.ryebook.product.model.pub.Product
@@ -13,12 +12,10 @@ import org.springframework.statemachine.support.StateMachineInterceptorAdapter
 import org.springframework.statemachine.transition.Transition
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import java.lang.Exception
 
 @Component
 class ProductDomainEventInterceptor(
     private val productDomainGetService: ProductDomainGetService,
-    private val productDomainCreateService: ProductDomainCreateService
 ) : StateMachineInterceptorAdapter<Product.Status, Product.Event>() {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -33,11 +30,13 @@ class ProductDomainEventInterceptor(
     ) {
 
         if (state.isNull()) {
-            log.warn("@@@ preStateChanged : state is null")
+            log.info("@@@ preStateChanged : state is null")
             return
         }
 
-        log.warn("@@@ preStateChanged : state.id[${state!!.id}]")
+        log.info("@@@ preStateChanged : state.id[${state!!.id}]")
+
+        throw RuntimeException("oops?!")
 
         val productId = message?.headers?.getProductHeaderIdOrThrow() ?: return
         val currentProduct = productDomainGetService.findByIdOrNull(productId)?.apply {

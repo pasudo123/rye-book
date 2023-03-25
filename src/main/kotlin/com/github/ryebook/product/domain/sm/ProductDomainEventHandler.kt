@@ -21,20 +21,34 @@ class ProductDomainEventHandler(
         val stateMachine = productStateMachineFactory.getStateMachine(product.id.toString())
 
         stateMachine.run {
-            this.stopReactively().subscribe()
+            this.stopReactively().doOnError {
+                log.error("@@@ stopReactively().error : $it")
+            }.subscribe()
             this.stateMachineAccessor.doWithAllRegions { access ->
                 access.addStateMachineInterceptor(productStateMachineInterceptor)
                 access.resetStateMachineReactively(
                     DefaultStateMachineContext(product.status, null, null, null)
-                ).subscribe()
+                ).doOnError {
+                    log.error("@@@ resetStateMachineReactively().error : $it")
+                }.subscribe()
             }
-            this.startReactively().subscribe()
+            this.startReactively().doOnError {
+                log.error("@@@ startReactively().error : $it")
+            }.subscribe()
         }
 
         val message = MessageBuilder.withPayload(productEvent)
             .setHeader(PRODUCT_ID_HEADER, product.id)
             .build()
 
-        stateMachine.sendEvent(Mono.just(message)).subscribe()
+        stateMachine.sendEvent(Mono.just(message)).doOnError {
+            log.error("@@@ sendEvent().doOnError : $it")
+        }.doOnCancel {
+            log.warn("@@@ sendEvent().doOnCancel")
+        }.doOnComplete {
+            log.info("@@@ sendEvent().doOnComplete")
+        }.doOnNext { eventResult ->
+            log.info("@@@ sendEvent().doOnNext : ${eventResult.resultType}")
+        }.log().subscribe()
     }
 }

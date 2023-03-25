@@ -2,11 +2,10 @@ package com.github.ryebook.product.config
 
 import com.github.ryebook.product.model.pub.Product
 import org.slf4j.LoggerFactory
+import org.springframework.statemachine.StateMachine
 import org.springframework.statemachine.listener.StateMachineListenerAdapter
 import org.springframework.statemachine.state.State
-import org.springframework.stereotype.Component
 
-@Component
 class ProductStateMachineListener : StateMachineListenerAdapter<Product.Status, Product.Event>() {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -21,5 +20,13 @@ class ProductStateMachineListener : StateMachineListenerAdapter<Product.Status, 
 
     override fun stateExited(state: State<Product.Status, Product.Event>?) {
         log.info("@@@ stateExited : state.id[${state?.id}]")
+    }
+
+    override fun stateMachineStopped(stateMachine: StateMachine<Product.Status, Product.Event>?) {
+        log.warn("@@@ stateMachineStopped")
+    }
+
+    override fun stateMachineError(stateMachine: StateMachine<Product.Status, Product.Event>?, exception: Exception?) {
+        log.error("@@@ stateMachineError : state.id[${stateMachine?.state?.id}], exception[${exception?.message}]")
     }
 }
