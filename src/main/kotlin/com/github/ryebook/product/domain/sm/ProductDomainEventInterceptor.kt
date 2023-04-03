@@ -36,8 +36,6 @@ class ProductDomainEventInterceptor(
 
         log.info("@@@ preStateChanged : state.id[${state!!.id}]")
 
-        throw RuntimeException("oops?!")
-
         val productId = message?.headers?.getProductHeaderIdOrThrow() ?: return
         val currentProduct = productDomainGetService.findByIdOrNull(productId)?.apply {
             this.changeStatus(state.id)
