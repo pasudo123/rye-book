@@ -68,6 +68,10 @@ dependencies {
     implementation("org.springframework.statemachine:spring-statemachine-starter")
     implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
 
+    // swagger : https://springdoc.org/
+    implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
+    implementation("org.springdoc:springdoc-openapi-webmvc-core:1.7.0")
+
     // coroutine & reactive
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

@@ -22,6 +22,12 @@ spring:
   main:
     allow-bean-definition-overriding: true
 
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    url: /swagger-ui.html
+
 logging:
   level:
     com.github.ryebook: INFO
