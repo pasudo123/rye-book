@@ -6,6 +6,12 @@ import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toRespon
 import com.github.ryebook.product.application.ProductGetService
 import com.github.ryebook.product.domain.sm.ProductDomainEventHandler
 import com.github.ryebook.product.model.pub.Product
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.Parameters
+import io.swagger.v3.oas.annotations.enums.ParameterIn
+import io.swagger.v3.oas.annotations.media.Schema
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,16 +25,19 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("products")
+@Tag(name = "ProductController", description = "ryebook 에 등록된 상품 컨트롤러")
 class ProductController(
     private val productGetService: ProductGetService,
     private val productDomainEventHandler: ProductDomainEventHandler
 ) {
 
+    @Operation(summary = "상품타입에 맞는 상품 페이징 조회", description = "상품 목록을 조회합니다.")
+    @Parameters(value = [
+        Parameter(name = "type", description = "a", `in` = ParameterIn.QUERY),
+    ])
     @GetMapping
     fun getProductsByType(
         @RequestParam("type") type: String,
-        @RequestParam("page", defaultValue = "0") page: Int,
-        @RequestParam("size", defaultValue = "10") size: Int,
         pageable: Pageable
     ): List<ProductDto.Response> {
         return productGetService
@@ -36,6 +45,7 @@ class ProductController(
             .toResponses()
     }
 
+    @Operation(summary = "상품 Id 에 맞는 상품 단일 조회", description = "단일 상품을 조회합니다.")
     @GetMapping("{id}")
     fun getProductById(
         @PathVariable("id") id: Long
@@ -43,6 +53,7 @@ class ProductController(
         return productGetService.findByIdOrThrow(id).toResponse()
     }
 
+    @Operation(summary = "상품 Id 에 대한 이벤트 발행", description = "특정 상품에 대한 이벤트를 발생시킵니다.")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     @PatchMapping("{id}/event")
     fun handleEvent(
