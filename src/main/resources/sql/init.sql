@@ -31,7 +31,7 @@ CREATE TABLE products (
     modified_at datetime null
 );
 
-CREATE TABLE bookings (
+CREATE TABLE booking (
     id bigint(20) PRIMARY KEY AUTO_INCREMENT,
     user_id varchar(128) not null,
     product_id bigint(20) not null,

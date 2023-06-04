@@ -1,6 +1,7 @@
 package com.github.ryebook.product.model.pub
 
 import com.github.ryebook.common.model.BaseEntity
+import org.hibernate.annotations.SelectBeforeUpdate
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -15,7 +16,8 @@ import javax.persistence.Table
 
 @Table
 @Entity(name = "products")
-class Product(
+@SelectBeforeUpdate
+class ProductV2(
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type", columnDefinition = "VARCHAR(64) comment '상품타입'")
     val type: ProductType,
@@ -96,9 +98,15 @@ class Product(
         return this.quantity >= 1
     }
 
+    fun name() = if (this.type == ProductType.BOOK) {
+        book!!.name
+    } else {
+        ticket!!.name
+    }
+
     companion object {
-        fun fromBook(bookProduct: BookProduct): Product {
-            return Product(
+        fun fromBook(bookProduct: BookProduct): ProductV2 {
+            return ProductV2(
                 ProductType.BOOK,
                 bookProduct.price!!,
                 quantity = 0L,
@@ -107,8 +115,8 @@ class Product(
             }
         }
 
-        fun fromTicket(ticketProduct: TicketProduct): Product {
-            return Product(
+        fun fromTicket(ticketProduct: TicketProduct): ProductV2 {
+            return ProductV2(
                 ProductType.TICKET,
                 ticketProduct.price!!,
                 quantity = 0L,

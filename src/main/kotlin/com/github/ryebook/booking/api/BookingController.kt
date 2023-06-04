@@ -18,12 +18,26 @@ class BookingController(
     private val bookingCreateService: BookingCreateService
 ) {
 
-    @Operation(summary = "사용자는 특정 프로덕트를 사전예약 구매", description = "ProductId 를 기반으로 특정한 상품에 대해 사전예약을 진행한다.")
+    @Operation(
+        summary = "사용자는 특정 프로덕트를 사전예약 구매",
+        description = "mysql 단순 이용"
+    )
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    @PostMapping("pre-payment")
-    fun createBookingByProductId(
+    @PostMapping("pre-payment-v1")
+    fun createBookingByProductIdV1(
         @RequestBody request: BookingDto.Request
     ) {
-        bookingCreateService.createBookingByProductId(request.userId, request.productId!!)
+        bookingCreateService.createBookingByProductIdV1(request.userId, request.productId!!)
+    }
+
+    @Operation(
+        description = "mysql 의 optimisticLock 을 이용"
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PostMapping("pre-payment-v2")
+    fun createBookingByProductIdV2(
+        @RequestBody request: BookingDto.Request
+    ) {
+        bookingCreateService.createBookingByProductIdV2(request.userId, request.productId!!)
     }
 }

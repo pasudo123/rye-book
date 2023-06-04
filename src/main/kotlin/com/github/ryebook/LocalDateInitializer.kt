@@ -2,10 +2,11 @@ package com.github.ryebook
 
 import com.github.ryebook.common.util.isDataInit
 import com.github.ryebook.product.application.ProductCreateService
+import com.github.ryebook.product.application.ProductModifyService
 import com.github.ryebook.product.infra.BookRepository
 import com.github.ryebook.product.infra.TicketRepository
 import com.github.ryebook.product.model.pub.Book
-import com.github.ryebook.product.model.pub.Product
+import com.github.ryebook.product.model.pub.ProductType
 import com.github.ryebook.product.model.pub.Ticket
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -23,6 +24,7 @@ class LocalDateInitializer(
     private val bookRepository: BookRepository,
     private val ticketRepository: TicketRepository,
     private val productCreateService: ProductCreateService,
+    private val productModifyService: ProductModifyService,
 ) : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -36,7 +38,7 @@ class LocalDateInitializer(
 
         log.info("@@ init(OOO) @@")
 
-        addBooks()
+        // addBooks()
         addTickets()
     }
 
@@ -60,7 +62,7 @@ class LocalDateInitializer(
         )
 
         val bookIds = bookRepository.saveAllAndFlush(books).mapNotNull { it.id }
-        productCreateService.createProductWithTypeAndPrice(bookIds, Product.Type.BOOK, price = 10000)
+        productCreateService.createProductWithTypeAndPrice(bookIds, ProductType.BOOK, price = 10000)
     }
 
     private fun addTickets() {
@@ -74,16 +76,12 @@ class LocalDateInitializer(
             )
         )
 
-        tickets.add(
-            Ticket(
-                name = "2023 박재범 콘서트-${randomUUIDByLength(10)}",
-                availableStartedAt = LocalDateTime.of(2023, 11, 1, 18, 0, 0),
-                availableEndedAt = LocalDateTime.of(2023, 11, 1, 22, 0, 0)
-            )
-        )
-
         val ticketIds = ticketRepository.saveAllAndFlush(tickets).mapNotNull { it.id }
-        productCreateService.createProductWithTypeAndPrice(ticketIds, Product.Type.TICKET, price = 30000)
+        val productIds = productCreateService.createProductWithTypeAndPrice(ticketIds, ProductType.TICKET, price = 30000)
+
+        productIds.forEach { productId ->
+            productModifyService.modifyQuantity(productId, quantity = 3)
+        }
     }
 
     private fun randomUUIDByLength(length: Int): String {

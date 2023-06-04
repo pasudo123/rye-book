@@ -6,6 +6,7 @@ import com.github.ryebook.product.api.dto.ProductDto.Response.Companion.toRespon
 import com.github.ryebook.product.application.ProductGetService
 import com.github.ryebook.product.domain.sm.ProductDomainEventHandler
 import com.github.ryebook.product.model.pub.Product
+import com.github.ryebook.product.model.pub.ProductType
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.Parameters
@@ -42,7 +43,7 @@ class ProductController(
         pageable: Pageable
     ): List<ProductDto.Response> {
         return productGetService
-            .findMerchandisesWithPageable(Product.Type.valueOf(type.uppercase()), pageable)
+            .findMerchandisesWithPageable(ProductType.valueOf(type.uppercase()), pageable)
             .toResponses()
     }
 

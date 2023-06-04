@@ -1,17 +1,13 @@
 package com.github.ryebook.booking.model
 
 import com.github.ryebook.common.model.BaseEntity
-import com.github.ryebook.product.model.pub.Product
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
 import javax.persistence.Enumerated
-import javax.persistence.FetchType
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Table
@@ -20,9 +16,8 @@ class Booking(
     @Column(name = "user_id", nullable = false, columnDefinition = "VARCHAR(128) comment '유저아이디'")
     val userId: String,
 
-    @JoinColumn(name = "product_id", nullable = false)
-    @OneToOne(targetEntity = Product::class, fetch = FetchType.EAGER, optional = false)
-    val product: Product
+    @Column(name = "product_id", nullable = false, columnDefinition = "BIGINT comment '상품아이디'")
+    val productId: Long
 ) : BaseEntity() {
 
     @Id

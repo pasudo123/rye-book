@@ -37,6 +37,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    jcenter()
     maven(url = "https://repo.spring.io/snapshot")
     maven(url = "https://repo.spring.io/milestone")
 }
@@ -93,6 +94,9 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:mysql:$testcontainersVersion")
+
+    // khttp
+    testImplementation("khttp:khttp:0.1.0")
 
     // reactor test
     // https://mvnrepository.com/artifact/io.projectreactor/reactor-test

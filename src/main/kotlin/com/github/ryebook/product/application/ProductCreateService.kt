@@ -5,6 +5,8 @@ import com.github.ryebook.product.infra.BookRepository
 import com.github.ryebook.product.infra.TicketRepository
 import com.github.ryebook.product.model.pub.BookProduct
 import com.github.ryebook.product.model.pub.Product
+import com.github.ryebook.product.model.pub.ProductType
+import com.github.ryebook.product.model.pub.ProductV2
 import com.github.ryebook.product.model.pub.TicketProduct
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -22,21 +24,27 @@ class ProductCreateService(
      * @param price     가격
      */
     @Transactional
-    fun createProductWithTypeAndPrice(ids: List<Long>, type: Product.Type, price: Long): List<Long> {
+    fun createProductWithTypeAndPrice(ids: List<Long>, type: ProductType, price: Long): List<Long> {
         return when (type) {
-            Product.Type.BOOK -> {
+            ProductType.BOOK -> {
                 val books = bookRepository.findAllByRegister(false).filter { ids.contains(it.id) }
                 val bookProducts = books.map { BookProduct.from(it, price) }
+
                 val productIds = productDomainCreateService.createOrPatch(bookProducts.map { Product.fromBook(it) })
+                val productIdV2s = productDomainCreateService.createOrPatchV2(bookProducts.map { ProductV2.fromBook(it) })
+
                 books.forEach { it.registered() }
-                productIds
+                (productIds + productIdV2s).toSet().toList()
             }
-            Product.Type.TICKET -> {
+            ProductType.TICKET -> {
                 val tickets = ticketRepository.findAllByRegister(false).filter { ids.contains(it.id) }
                 val ticketProducts = tickets.map { TicketProduct.from(it, price) }
+
                 val productIds = productDomainCreateService.createOrPatch(ticketProducts.map { Product.fromTicket(it) })
+                val productIdV2s = productDomainCreateService.createOrPatchV2(ticketProducts.map { ProductV2.fromTicket(it) })
+
                 tickets.forEach { it.registered() }
-                productIds
+                (productIds + productIdV2s).toSet().toList()
             }
         }
     }

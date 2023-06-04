@@ -13,11 +13,11 @@ spring:
     open-in-view: false
     generate-ddl: false
     hibernate:
-      ddl-auto: none
-    show-sql: true
+      ddl-auto: create-drop
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
 
   main:
     allow-bean-definition-overriding: true
@@ -35,4 +35,4 @@ logging:
     # org.hibernate.type.descriptor.sql: TRACE
 
 custom-config:
-  init-data: false
+  init-data: true
