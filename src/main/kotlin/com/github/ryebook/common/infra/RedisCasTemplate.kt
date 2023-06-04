@@ -42,7 +42,9 @@ class RedisCasTemplate(
                     }
 
                     operations.multi()
-                    operations.opsForValue().set(productKey, "${INIT_LOCK_VALUE.plus(1)}", Duration.ofSeconds(60L))
+                    // operations.opsForValue().set(productKey, "${INIT_LOCK_VALUE.plus(1)}", Duration.ofSeconds(60L))
+                    operations.opsForValue().increment(productKey)
+                    operations.expire(productKey, Duration.ofSeconds(60L))
                     return operations.exec()
                 }
 

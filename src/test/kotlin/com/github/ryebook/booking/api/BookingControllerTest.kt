@@ -57,7 +57,7 @@ class BookingControllerTest {
     @Test
     fun `동시성 제어를 확인한다 V3 (Redis 낙관적락 사용)`() {
 
-        val userIds = (1..100).map {
+        val userIds = (500..1000).map {
             "홍길동-$it"
         }
 
