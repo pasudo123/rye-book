@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.Parameters
 import io.swagger.v3.oas.annotations.enums.ParameterIn
-import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpStatus
@@ -32,9 +31,11 @@ class ProductController(
 ) {
 
     @Operation(summary = "상품타입에 맞는 상품 페이징 조회", description = "상품 목록을 조회합니다.")
-    @Parameters(value = [
-        Parameter(name = "type", description = "a", `in` = ParameterIn.QUERY),
-    ])
+    @Parameters(
+        value = [
+            Parameter(name = "type", description = "상품타입", `in` = ParameterIn.QUERY),
+        ]
+    )
     @GetMapping
     fun getProductsByType(
         @RequestParam("type") type: String,

@@ -22,16 +22,16 @@ class ProductCreateService(
      * @param price     가격
      */
     @Transactional
-    fun createProductWithTypeAndPrice(type: Product.Type, price: Long) {
+    fun createProductWithTypeAndPrice(ids: List<Long>, type: Product.Type, price: Long) {
         when (type) {
             Product.Type.BOOK -> {
-                val books = bookRepository.findAllByRegister(false)
+                val books = bookRepository.findAllByRegister(false).filter { ids.contains(it.id) }
                 val bookProducts = books.map { BookProduct.from(it, price) }
                 productDomainCreateService.createOrPatch(bookProducts.map { Product.fromBook(it) })
                 books.forEach { it.registered() }
             }
             Product.Type.TICKET -> {
-                val tickets = ticketRepository.findAllByRegister(false)
+                val tickets = ticketRepository.findAllByRegister(false).filter { ids.contains(it.id) }
                 val ticketProducts = tickets.map { TicketProduct.from(it, price) }
                 productDomainCreateService.createOrPatch(ticketProducts.map { Product.fromTicket(it) })
                 tickets.forEach { it.registered() }

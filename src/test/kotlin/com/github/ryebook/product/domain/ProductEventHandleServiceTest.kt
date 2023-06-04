@@ -21,6 +21,10 @@ class ProductEventHandleServiceTest(
     private lateinit var books: List<Product>
     private lateinit var tickets: List<Product>
 
+    /**
+     * LocalDateInitializer.Kt 에서 데이터초기화가 수행됨.
+     * 따라서 아래구문에서는 조회만 하고 있음.
+     */
     @BeforeEach
     fun beforeEach() {
         this.books = productDomainGetService.findAllWithPageable(Product.Type.BOOK, Pageable.ofSize(10))

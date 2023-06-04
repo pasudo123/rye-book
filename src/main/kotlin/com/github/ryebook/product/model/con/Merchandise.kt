@@ -20,4 +20,11 @@ sealed class Merchandise(
             return null
         }
     }
+
+    /**
+     * 재고가 1개이상 남았는지 여부 체크
+     */
+    private fun isBookingPossible(): Boolean {
+        return this.product.quantity >= 1
+    }
 }

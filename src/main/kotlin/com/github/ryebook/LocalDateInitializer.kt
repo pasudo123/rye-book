@@ -59,8 +59,8 @@ class LocalDateInitializer(
             )
         )
 
-        bookRepository.saveAllAndFlush(books)
-        productCreateService.createProductWithTypeAndPrice(Product.Type.BOOK, price = 10000)
+        val bookIds = bookRepository.saveAllAndFlush(books).mapNotNull { it.id }
+        productCreateService.createProductWithTypeAndPrice(bookIds, Product.Type.BOOK, price = 10000)
     }
 
     private fun addTickets() {
@@ -82,8 +82,8 @@ class LocalDateInitializer(
             )
         )
 
-        ticketRepository.saveAllAndFlush(tickets)
-        productCreateService.createProductWithTypeAndPrice(Product.Type.TICKET, price = 30000)
+        val ticketIds = ticketRepository.saveAllAndFlush(tickets).mapNotNull { it.id }
+        productCreateService.createProductWithTypeAndPrice(ticketIds, Product.Type.TICKET, price = 30000)
     }
 
     private fun randomUUIDByLength(length: Int): String {

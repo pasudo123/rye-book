@@ -30,3 +30,12 @@ CREATE TABLE products (
     created_at datetime null,
     modified_at datetime null
 );
+
+CREATE TABLE bookings (
+    id bigint(20) PRIMARY KEY AUTO_INCREMENT,
+    user_id varchar(128) not null,
+    product_id bigint(20) not null,
+    booking_status varchar(32) not null,
+    created_at datetime null,
+    modified_at datetime null
+);
