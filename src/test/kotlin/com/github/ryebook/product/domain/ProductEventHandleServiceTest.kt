@@ -3,6 +3,7 @@ package com.github.ryebook.product.domain
 import com.github.ryebook.IntegrationTestSupport
 import com.github.ryebook.product.domain.sm.ProductDomainEventService
 import com.github.ryebook.product.model.pub.Product
+import com.github.ryebook.product.model.pub.ProductType
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
@@ -27,8 +28,8 @@ class ProductEventHandleServiceTest(
      */
     @BeforeEach
     fun beforeEach() {
-        this.books = productDomainGetService.findAllWithPageable(Product.Type.BOOK, Pageable.ofSize(10))
-        this.tickets = productDomainGetService.findAllWithPageable(Product.Type.TICKET, Pageable.ofSize(10))
+        this.books = productDomainGetService.findAllWithPageable(ProductType.BOOK, Pageable.ofSize(10))
+        this.tickets = productDomainGetService.findAllWithPageable(ProductType.TICKET, Pageable.ofSize(10))
         log.info("============================================================")
     }
 

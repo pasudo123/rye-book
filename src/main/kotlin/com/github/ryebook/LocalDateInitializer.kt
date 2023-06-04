@@ -80,7 +80,7 @@ class LocalDateInitializer(
         val productIds = productCreateService.createProductWithTypeAndPrice(ticketIds, ProductType.TICKET, price = 30000)
 
         productIds.forEach { productId ->
-            productModifyService.modifyQuantity(productId, quantity = 3)
+            productModifyService.modifyQuantity(productId, quantity = 6)
         }
     }
 

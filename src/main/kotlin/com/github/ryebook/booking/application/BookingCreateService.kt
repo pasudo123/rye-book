@@ -42,10 +42,14 @@ class BookingCreateService(
         userId: String,
         productId: Long
     ) {
-        val product = productGetService.findV2ByIdOrThrow(productId)
+        val product = try {
+            productGetService.findV2ByIdOrThrow(productId)
+        } catch (exception: Exception) {
+            log.error("exception : ${exception.message}")
+            return
+        }
 
         if (product.isBookingPossible()) {
-            log.info("userId[$userId] 예약 OOOOO")
             product.reduceQuantity(quantity = -1)
             bookingRepository.save(Booking(userId, product.id!!))
             productV2Repository.save(product)

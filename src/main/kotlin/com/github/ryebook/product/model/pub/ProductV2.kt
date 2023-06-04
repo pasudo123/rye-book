@@ -1,7 +1,8 @@
 package com.github.ryebook.product.model.pub
 
 import com.github.ryebook.common.model.BaseEntity
-import org.hibernate.annotations.SelectBeforeUpdate
+import org.hibernate.annotations.OptimisticLockType
+import org.hibernate.annotations.OptimisticLocking
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -13,10 +14,11 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.OneToOne
 import javax.persistence.Table
+import javax.persistence.Version
 
 @Table
-@Entity(name = "products")
-@SelectBeforeUpdate
+@Entity(name = "products_v2")
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 class ProductV2(
     @Enumerated(EnumType.STRING)
     @Column(name = "product_type", columnDefinition = "VARCHAR(64) comment '상품타입'")
@@ -52,6 +54,10 @@ class ProductV2(
     @Column(name = "product_status", columnDefinition = "VARCHAR(64) comment '상품상태'")
     var status: Status = Status.NEW
         protected set
+
+    @Version
+    @Column(name = "version", columnDefinition = "bigint comment 'OptimisticLock 적용'")
+    var version: Long? = null
 
     enum class Status(desc: String) {
         NEW("신규상태"),

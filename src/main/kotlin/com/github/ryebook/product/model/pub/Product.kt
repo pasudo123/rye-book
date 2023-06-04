@@ -85,6 +85,10 @@ class Product(
      * 기본으로 1씩 감소
      */
     fun reduceQuantity(quantity: Long = -1) {
+        if (this.quantity == 0L) {
+            throw Exception("재고가 존재하지 않습니다.")
+        }
+
         this.quantity += quantity
     }
 

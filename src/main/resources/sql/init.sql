@@ -31,6 +31,18 @@ CREATE TABLE products (
     modified_at datetime null
 );
 
+CREATE TABLE products_v2 (
+    id bigint(20) PRIMARY KEY AUTO_INCREMENT,
+    quantity bigint not null default 0,
+    price bigint not null,
+    product_type VARCHAR(64) not null,
+    product_status VARCHAR(64) not null default 'NEW',
+    book_id bigint null,
+    ticket_id bigint null,
+    created_at datetime null,
+    modified_at datetime null
+);
+
 CREATE TABLE booking (
     id bigint(20) PRIMARY KEY AUTO_INCREMENT,
     user_id varchar(128) not null,

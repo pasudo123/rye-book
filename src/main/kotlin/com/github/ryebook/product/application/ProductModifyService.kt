@@ -16,7 +16,7 @@ class ProductModifyService(
         productId: Long,
         quantity: Long
     ) {
-        val product = productGetService.findByIdOrThrow(productId)
-        product.changeQuantity(quantity)
+        productGetService.findByIdOrThrow(productId).run { this.changeQuantity(quantity) }
+        productGetService.findV2ByIdOrThrow(productId).run { this.changeQuantity(quantity) }
     }
 }
