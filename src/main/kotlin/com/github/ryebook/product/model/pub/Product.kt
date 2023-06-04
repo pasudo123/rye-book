@@ -81,12 +81,8 @@ class Product(
         status?.let { this.status = status }
     }
 
-    fun isBook(): Boolean {
-        return this.type == Type.BOOK
-    }
-
-    fun isTicket(): Boolean {
-        return this.type == Type.TICKET
+    fun changeQuantity(quantity: Long) {
+        this.quantity = quantity
     }
 
     companion object {

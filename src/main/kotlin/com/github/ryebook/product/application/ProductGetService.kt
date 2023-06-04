@@ -12,12 +12,16 @@ class ProductGetService(
     private val productDomainGetService: ProductDomainGetService
 ) {
 
-    fun findProductsWithPageable(type: Product.Type, pageable: Pageable): List<Merchandise> {
+    fun findMerchandisesWithPageable(type: Product.Type, pageable: Pageable): List<Merchandise> {
         return productDomainGetService.findAllWithPageable(type, pageable).map { Merchandise.from(it) }
     }
 
-    fun findByIdOrThrow(id: Long): Merchandise {
+    fun findMerchandiseByIdOrThrow(id: Long): Merchandise {
         val product = productDomainGetService.findByIdOrNull(id) ?: throw DataNotFoundException("product[$id] 는 존재하지 않습니다.")
         return Merchandise.from(product)
+    }
+
+    fun findByIdOrThrow(id: Long): Product {
+        return productDomainGetService.findByIdOrNull(id) ?: throw DataNotFoundException("product[$id] 는 존재하지 않습니다.")
     }
 }

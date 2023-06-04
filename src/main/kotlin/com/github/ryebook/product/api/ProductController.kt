@@ -42,7 +42,7 @@ class ProductController(
         pageable: Pageable
     ): List<ProductDto.Response> {
         return productGetService
-            .findProductsWithPageable(Product.Type.valueOf(type.uppercase()), pageable)
+            .findMerchandisesWithPageable(Product.Type.valueOf(type.uppercase()), pageable)
             .toResponses()
     }
 
@@ -51,7 +51,7 @@ class ProductController(
     fun getProductById(
         @PathVariable("id") id: Long
     ): ProductDto.Response {
-        return productGetService.findByIdOrThrow(id).toResponse()
+        return productGetService.findMerchandiseByIdOrThrow(id).toResponse()
     }
 
     @Operation(summary = "상품 Id 에 대한 이벤트 발행", description = "특정 상품에 대한 이벤트를 발생시킵니다.")
@@ -61,7 +61,7 @@ class ProductController(
         @PathVariable("id") id: Long,
         @RequestBody request: ProductDto.RequestEvent
     ) {
-        val merchandise = productGetService.findByIdOrThrow(id)
+        val merchandise = productGetService.findMerchandiseByIdOrThrow(id)
         productDomainEventHandler.sendEventWithProduct(merchandise.product, Product.Event.valueOf(request.event))
     }
 }

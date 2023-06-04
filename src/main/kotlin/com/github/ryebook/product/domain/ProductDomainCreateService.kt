@@ -9,11 +9,7 @@ class ProductDomainCreateService(
     private val productRepository: ProductRepository
 ) {
 
-    fun createOrPatch(products: List<Product>) {
-        productRepository.saveAll(products)
-    }
-
-    fun createOrPatch(product: Product) {
-        productRepository.save(product)
+    fun createOrPatch(products: List<Product>): List<Long> {
+        return productRepository.saveAll(products).mapNotNull { it.id }
     }
 }

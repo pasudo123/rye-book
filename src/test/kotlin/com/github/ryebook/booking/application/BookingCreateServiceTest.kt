@@ -2,6 +2,7 @@ package com.github.ryebook.booking.application
 
 import com.github.ryebook.IntegrationTestSupport
 import com.github.ryebook.product.application.ProductCreateService
+import com.github.ryebook.product.application.ProductModifyService
 import com.github.ryebook.product.infra.TicketRepository
 import com.github.ryebook.product.model.pub.Product
 import com.github.ryebook.product.model.pub.Ticket
@@ -18,12 +19,16 @@ import java.time.LocalDateTime
 class BookingCreateServiceTest(
     private val ticketRepository: TicketRepository,
     private val productCreateService: ProductCreateService,
+    private val productModifyService: ProductModifyService,
     private val bookingCreateService: BookingCreateService,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
     private lateinit var books: List<Product>
     private lateinit var tickets: List<Product>
+
+    // 초기수량
+    private val quantity = 3L
 
     @BeforeEach
     fun `데이터 초기화`() {
@@ -37,7 +42,8 @@ class BookingCreateServiceTest(
         )
 
         val ticketIds = ticketRepository.saveAllAndFlush(tickets).mapNotNull { it.id }
-        productCreateService.createProductWithTypeAndPrice(ticketIds, Product.Type.TICKET, price = 30000)
+        val productIds = productCreateService.createProductWithTypeAndPrice(ticketIds, Product.Type.TICKET, price = 30000)
+        productModifyService.modifyQuantity(productIds.first(), quantity)
     }
 
     @Test

@@ -25,7 +25,7 @@ class BookingCreateService(
         userId: String,
         productId: Long
     ) {
-        val merchandise = productGetService.findByIdOrThrow(productId)
+        val merchandise = productGetService.findMerchandiseByIdOrThrow(productId)
         log.info("Hello")
     }
 }
