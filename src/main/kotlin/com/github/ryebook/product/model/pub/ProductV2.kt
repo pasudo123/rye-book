@@ -56,7 +56,7 @@ class ProductV2(
         protected set
 
     @Version
-    @Column(name = "version", columnDefinition = "bigint comment 'OptimisticLock 적용'")
+    @Column(columnDefinition = "bigint comment 'OptimisticLock 적용'")
     var version: Long? = null
 
     enum class Status(desc: String) {

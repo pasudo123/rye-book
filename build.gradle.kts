@@ -65,6 +65,12 @@ dependencies {
     kapt("com.querydsl:querydsl-apt:$querydslVersion:jpa")
     implementation("com.querydsl:querydsl-jpa:$querydslVersion")
 
+    // redis + lettuce
+    implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+    // khttp
+    implementation("khttp:khttp:0.1.0")
+
     // state-machine
     implementation("org.springframework.statemachine:spring-statemachine-starter")
     implementation("org.springframework.statemachine:spring-statemachine-data-jpa")
@@ -94,9 +100,6 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:$testcontainersVersion")
     testImplementation("org.testcontainers:junit-jupiter:$testcontainersVersion")
     testImplementation("org.testcontainers:mysql:$testcontainersVersion")
-
-    // khttp
-    testImplementation("khttp:khttp:0.1.0")
 
     // reactor test
     // https://mvnrepository.com/artifact/io.projectreactor/reactor-test

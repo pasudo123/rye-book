@@ -2,6 +2,12 @@ server:
   port: 8080
 
 spring:
+  redis:
+    host: localhost
+    port: 17380
+    password: ''
+    timeout: 3000
+
   datasource:
     username: root
     password: rootpass

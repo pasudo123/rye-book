@@ -13,7 +13,7 @@ class BookingControllerTest {
     private val SIZE = 200
 
     @Test
-    fun `api 호출을 통해서 동시성 제어를 확인한다 V1`() {
+    fun `동시성 제어를 확인한다 V1 (일반)`() {
 
         val userIds = (1..SIZE).map {
             "홍길동-$it"
@@ -34,7 +34,7 @@ class BookingControllerTest {
     }
 
     @Test
-    fun `api 호출을 통해서 동시성 제어를 확인한다 V2`() {
+    fun `동시성 제어를 확인한다 V2 (Mysql 낙관적락 사용)`() {
 
         val userIds = (1..SIZE).map {
             "홍길동-$it"
@@ -49,6 +49,27 @@ class BookingControllerTest {
                         "productId" to 1L
                     )
                     post(url = "$localhost/bookings/pre-payment-v2", json = map)
+                }
+            }.awaitAll()
+        }
+    }
+
+    @Test
+    fun `동시성 제어를 확인한다 V3 (Redis 낙관적락 사용)`() {
+
+        val userIds = (1..100).map {
+            "홍길동-$it"
+        }
+
+        runBlocking {
+            userIds.map { userId ->
+                async(Dispatchers.IO) {
+
+                    val map = mapOf<String, Any>(
+                        "userId" to userId,
+                        "productId" to 1L
+                    )
+                    post(url = "$localhost/bookings/pre-payment-v3", json = map)
                 }
             }.awaitAll()
         }

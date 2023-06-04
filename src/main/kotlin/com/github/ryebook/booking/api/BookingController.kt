@@ -48,7 +48,20 @@ class BookingController(
         } catch (exception: HibernateException) {
             log.error("[디비 익셉션] userId[${request.userId}] 예약 XXXXX : ${exception.message}")
         } catch (exception: Exception) {
+            // 여기서 낙관적락 에러가 잡히는걸로 보임.
             log.error("[일반 익셉션] userId[${request.userId}] 예약 XXXXX : ${exception.message}")
         }
+    }
+
+    @Operation(
+        summary = "사용자는 특정 프로덕트를 사전예약 구매",
+        description = "REDIS 의 CAS 연산을 이용 동시성 제어"
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PostMapping("pre-payment-v3")
+    fun createBookingByProductIdV3(
+        @RequestBody request: BookingDto.Request,
+    ) {
+        bookingCreateService.createBookingByProductIdV3(request.userId, request.productId!!)
     }
 }

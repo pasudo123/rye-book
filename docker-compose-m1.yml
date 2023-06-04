@@ -12,3 +12,13 @@ services:
     container_name: rye-book-mysql
     ports:
       - "13306:3306"
+  redis:
+    image: arm64v8/redis:5.0.14
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    container_name: rye-book-redis
+    ports:
+      - "17380:6379"
