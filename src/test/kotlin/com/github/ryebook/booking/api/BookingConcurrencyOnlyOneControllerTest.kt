@@ -7,7 +7,7 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 
-class BookingControllerTest {
+class BookingConcurrencyOnlyOneControllerTest {
 
     private val localhost = "http://localhost:8080"
     private val SIZE = 200

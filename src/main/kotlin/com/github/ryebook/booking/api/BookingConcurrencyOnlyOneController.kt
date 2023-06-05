@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("bookings")
 @Tag(name = "BookingController", description = "ryebook 에 등록된 상품을 사전예약 구매")
-class BookingController(
+class BookingConcurrencyOnlyOneController(
     private val bookingCreateService: BookingCreateService,
 ) {
 
