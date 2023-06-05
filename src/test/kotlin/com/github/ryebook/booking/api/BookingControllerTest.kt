@@ -74,4 +74,25 @@ class BookingControllerTest {
             }.awaitAll()
         }
     }
+
+    @Test
+    fun `동시성 제어를 확인한다 V4 (Mysql + Redis 락사용)`() {
+
+        val userIds = (1..5000).map {
+            "홍길동-$it"
+        }
+
+        runBlocking {
+            userIds.map { userId ->
+                async(Dispatchers.IO) {
+
+                    val map = mapOf<String, Any>(
+                        "userId" to userId,
+                        "productId" to 1L
+                    )
+                    post(url = "$localhost/bookings/pre-payment-v4", json = map)
+                }
+            }.awaitAll()
+        }
+    }
 }

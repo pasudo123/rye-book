@@ -1,6 +1,7 @@
 package com.github.ryebook.common.infra
 
 import com.github.ryebook.product.model.pub.Product
+import com.github.ryebook.product.model.pub.ProductV2
 import org.slf4j.LoggerFactory
 import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.core.SessionCallback
@@ -23,9 +24,14 @@ class RedisCasTemplate(
         private const val INIT_LOCK_VALUE = 0
     }
 
-    fun doLockingPossibleOrFalse(userId: String, product: Product): Boolean {
+    fun doLockingPossibleOrFalse(
+        userId: String,
+        product: Product? = null,
+        productV2: ProductV2? = null,
+    ): Boolean {
 
-        val productKey = "product:${product.id}"
+        val productId = if (product != null) product.id else productV2!!.id
+        val productKey = "product:$productId"
 
         try {
             val txResults = stringRedisTemplate.execute(object : SessionCallback<List<Any>> {
@@ -54,13 +60,14 @@ class RedisCasTemplate(
                 }
             })
 
+            log.info("@@ txResults : $txResults")
             if (txResults.isEmpty()) {
                 log.info("@@ user.id=$userId 는 예약할 수 없습니다. 누군가가 예약을 수행 중입니다.")
             }
 
             return txResults.isNotEmpty()
         } catch (exception: Exception) {
-            log.error("@@ user.id=$userId product.id=${product.id} 예상치 못한 에러가 발생 : ${exception.message}")
+            log.error("@@ user.id=$userId, product.id=$productId : 예상치 못한 에러가 발생 : ${exception.message}")
             return false
         }
     }

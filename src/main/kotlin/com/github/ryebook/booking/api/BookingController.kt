@@ -64,4 +64,16 @@ class BookingController(
     ) {
         bookingCreateService.createBookingByProductIdV3(request.userId, request.productId!!)
     }
+
+    @Operation(
+        summary = "사용자는 특정 프로덕트를 사전예약 구매",
+        description = "REDIS + Mysql 각각에 대한 OptimisticLocking 이용"
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PostMapping("pre-payment-v4")
+    fun createBookingByProductIdV4(
+        @RequestBody request: BookingDto.Request,
+    ) {
+        bookingCreateService.createBookingByProductIdV4(request.userId, request.productId!!)
+    }
 }

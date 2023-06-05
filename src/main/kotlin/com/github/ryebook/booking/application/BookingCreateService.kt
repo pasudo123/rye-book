@@ -67,11 +67,29 @@ class BookingCreateService(
     ) {
         val product = productGetService.findByIdOrThrow(productId)
 
-        if (product.isBookingPossible() && redisLockTemplate.doLockingPossibleOrFalse(userId, product)) {
+        if (product.isBookingPossible() && redisLockTemplate.doLockingPossibleOrFalse(userId, product = product)) {
             log.info("userId[$userId] 예약 OOOOO")
             product.reduceQuantity(quantity = -1)
             bookingRepository.save(Booking(userId, product.id!!))
             productRepository.save(product)
+        } else {
+            log.info("userId[$userId] 예약 XXXXX ")
+        }
+    }
+
+    @Transactional
+    fun createBookingByProductIdV4(
+        userId: String,
+        productId: Long
+    ) {
+
+        val product = productGetService.findV2ByIdOrThrow(productId)
+
+        if (product.isBookingPossible() && redisLockTemplate.doLockingPossibleOrFalse(userId, productV2 = product)) {
+            log.info("userId[$userId] 예약 OOOOO")
+            product.reduceQuantity(quantity = -1)
+            bookingRepository.save(Booking(userId, product.id!!))
+            productV2Repository.save(product)
         } else {
             log.info("userId[$userId] 예약 XXXXX ")
         }
