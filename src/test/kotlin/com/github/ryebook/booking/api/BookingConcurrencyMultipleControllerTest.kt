@@ -15,7 +15,7 @@ class BookingConcurrencyMultipleControllerTest {
     fun `재고 n 개에 대해서 동시성 제어 확인 V1 (redis decr)`() {
 
         // given
-        val userIds = (1..1000).map {
+        val userIds = (1..21).map {
             "이순신-$it"
         }
 

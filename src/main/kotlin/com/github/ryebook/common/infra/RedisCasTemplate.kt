@@ -30,7 +30,7 @@ class RedisCasTemplate(
     /**
      * @return Pair<Boolean, Long>
      *     - 예약가능한지 여부
-     *     - 재고갯수 여부
+     *     - 재고갯수
      */
     fun doLockingMultipleWithIncrDecrOrFalse(
         userId: String,

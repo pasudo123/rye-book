@@ -26,12 +26,12 @@ class BookingCreateMultipleService(
         val lockResult = redisLockTemplate.doLockingMultipleWithIncrDecrOrFalse(userId, product = product)
 
         if (product.isBookingPossible() && lockResult.first) {
-            log.info("multiple : userId[$userId], 재고갯수[${lockResult.second}] 예약 OOOOO")
+            log.info("multiple : userId[$userId], 남은재고[${lockResult.second}] 예약 OOOOO")
             // redis 에서 원자성을 보장해도 결과적으로 mysql 단에서도 재고 갯수도 원자성을 보존하기 위해 레디스 정렬된 zpop 의 결과를 이용한다.
             product.applyQuantity(lockResult.second)
             bookingRepository.save(Booking(userId, product.id!!))
         } else {
-            log.error("multiple : userId[$userId], 재고갯수[${lockResult.second}] 예약 XXXXX")
+            log.error("multiple : userId[$userId], 남은재고[${lockResult.second}] 예약 XXXXX")
         }
     }
 }
