@@ -4,8 +4,6 @@ import com.github.ryebook.booking.infra.BookingRepository
 import com.github.ryebook.booking.model.Booking
 import com.github.ryebook.common.infra.RedisCasTemplate
 import com.github.ryebook.product.application.ProductGetService
-import com.github.ryebook.product.infra.ProductRepository
-import com.github.ryebook.product.infra.ProductV2Repository
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -13,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class BookingCreateMultipleService(
     private val productGetService: ProductGetService,
-    private val productRepository: ProductRepository,
-    private val productV2Repository: ProductV2Repository,
-
     private val bookingRepository: BookingRepository,
     private val redisLockTemplate: RedisCasTemplate
 ) {

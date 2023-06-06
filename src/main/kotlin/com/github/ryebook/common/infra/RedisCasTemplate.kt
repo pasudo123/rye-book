@@ -57,8 +57,13 @@ class RedisCasTemplate(
             }
         } catch (exception: Exception) {
             // 예상치 못한 에러 발생 시, 일정시간 동안 재고를 0으로 변경하고 예약을 하지 못하도록 막는다. ? -> 좋은방법은 아닌듯..
-            log.error("@@ user.id=$userId, product.id=$productId : 예상치 못한 에러가 발생 : ${exception.message}")
-            stringRedisTemplate.opsForValue().set(productKey, "$SOLD_OUT_COUNT", Duration.ofSeconds(30))
+            // FIXME : (1) 바로 아래처럼 set() 을 하면 재고가 n 개 이상 남았는데, 예약을 수행하지 못하는 경우가 발생한다.
+            // log.error("@@ user.id=$userId, product.id=$productId : 예상치 못한 에러가 발생 : ${exception.message}")
+            // stringRedisTemplate.opsForValue().set(productKey, "$SOLD_OUT_COUNT", Duration.ofSeconds(30))
+
+            // FIXME : (2) 실패한 건에 대해서만 다시 incr 을 수행
+            log.error("@@ user.id=$userId, product.id=$productId : 예상치 못한 에러가 발생 : ${exception.message} -> 재시도 요청하도록 유도")
+            stringRedisTemplate.opsForValue().increment(productKey)
             return Pair(false, SOLD_OUT_COUNT)
         }
 
