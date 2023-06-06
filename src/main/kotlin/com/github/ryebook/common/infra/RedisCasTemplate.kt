@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.RedisOperations
 import org.springframework.data.redis.core.SessionCallback
 import org.springframework.data.redis.core.StringRedisTemplate
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.time.Duration
 
 /**
@@ -37,12 +36,12 @@ class RedisCasTemplate(
         userId: String,
         product: Product? = null,
         productV2: ProductV2? = null,
-    ): Pair<Boolean, Long>  {
+    ): Pair<Boolean, Long> {
 
         val productId = product?.id ?: productV2!!.id
         val productQuantity = product?.quantity ?: productV2!!.quantity
-        val productKey = "product-multiple:${productId}"
-        val productStockHistoryKey = "product-multiple-history:${productId}"
+        val productKey = "product-multiple:$productId"
+        val productStockHistoryKey = "product-multiple-history:$productId"
         val currentQuantity: Long
 
         try {
@@ -52,7 +51,7 @@ class RedisCasTemplate(
 
             if (currentQuantity <= DOES_NOT_BOOKING_LOCK) {
                 // decr 을 통해서 현재 재고에 대한 에약건을 계속 줄여나간다. -1 이 되기 전까지
-                log.error("@@ user.id=${userId} 는 더 이상 상품 product.id=${productId} 을 구매할 수 없습니다.")
+                log.error("@@ user.id=$userId 는 더 이상 상품 product.id=$productId 을 구매할 수 없습니다.")
                 stringRedisTemplate.opsForValue().setIfPresent(productKey, "$SOLD_OUT_COUNT", Duration.ofSeconds(60))
                 return Pair(false, SOLD_OUT_COUNT)
             }
@@ -67,7 +66,7 @@ class RedisCasTemplate(
             stringRedisTemplate.opsForZSet().add(productStockHistoryKey, "$currentQuantity", currentQuantity.toDouble())
             stringRedisTemplate.expire(productStockHistoryKey, Duration.ofSeconds(30))
             stringRedisTemplate.opsForZSet().range(productStockHistoryKey, 0L, 0L)
-                ?: throw CustomException("key=${productKey} 에 해당하는 score 를 찾을 수 없습니다.")
+                ?: throw CustomException("key=$productKey 에 해당하는 score 를 찾을 수 없습니다.")
         } catch (exception: Exception) {
             log.error("zset operation error : ${exception.message}")
             emptySet<String>()

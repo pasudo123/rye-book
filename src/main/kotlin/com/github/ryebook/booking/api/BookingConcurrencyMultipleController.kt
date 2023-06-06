@@ -2,16 +2,10 @@ package com.github.ryebook.booking.api
 
 import com.github.ryebook.booking.api.dto.BookingDto
 import com.github.ryebook.booking.application.BookingCreateMultipleService
-import com.github.ryebook.booking.application.BookingCreateOnlyOneService
-import com.github.ryebook.common.infra.RedisCasTemplate
-import com.github.ryebook.product.application.ProductGetService
-import com.github.ryebook.product.infra.ProductRepository
-import com.github.ryebook.product.infra.ProductV2Repository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
