@@ -1,7 +1,7 @@
 package com.github.ryebook.booking.api
 
 import com.github.ryebook.booking.api.dto.BookingDto
-import com.github.ryebook.booking.application.BookingCreateService
+import com.github.ryebook.booking.application.BookingCreateOnlyOneService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.hibernate.HibernateException
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("bookings")
 @Tag(name = "BookingController", description = "ryebook 에 등록된 상품을 사전예약 구매")
 class BookingConcurrencyOnlyOneController(
-    private val bookingCreateService: BookingCreateService,
+    private val bookingCreateService: BookingCreateOnlyOneService,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

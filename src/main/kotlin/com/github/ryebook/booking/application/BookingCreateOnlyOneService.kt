@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class BookingCreateService(
+class BookingCreateOnlyOneService(
     private val productGetService: ProductGetService,
     private val productRepository: ProductRepository,
     private val productV2Repository: ProductV2Repository,

@@ -92,6 +92,10 @@ class Product(
         this.quantity += quantity
     }
 
+    fun applyQuantity(quantity: Long) {
+        this.quantity = quantity
+    }
+
     /**
      * 재고가 1이상 남으면 예약이 가능하다
      * 그렇지 않으면 불가하다

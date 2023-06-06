@@ -21,7 +21,7 @@ class BookingCreateServiceTest(
     private val productCreateService: ProductCreateService,
     private val productModifyService: ProductModifyService,
     private val productGetService: ProductGetService,
-    private val bookingCreateService: BookingCreateService,
+    private val bookingCreateService: BookingCreateOnlyOneService,
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

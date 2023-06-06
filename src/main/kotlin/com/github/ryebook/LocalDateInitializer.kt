@@ -28,6 +28,7 @@ class LocalDateInitializer(
 ) : ApplicationRunner {
 
     private val log = LoggerFactory.getLogger(javaClass)
+    private val QUANTITY = 20L
 
     override fun run(args: ApplicationArguments?) {
 
@@ -80,7 +81,7 @@ class LocalDateInitializer(
         val productIds = productCreateService.createProductWithTypeAndPrice(ticketIds, ProductType.TICKET, price = 30000)
 
         productIds.forEach { productId ->
-            productModifyService.modifyQuantity(productId, quantity = 6)
+            productModifyService.modifyQuantity(productId, quantity = QUANTITY)
         }
     }
 
