@@ -2,7 +2,7 @@ package com.github.ryebook.booking.application
 
 import com.github.ryebook.booking.infra.BookingRepository
 import com.github.ryebook.booking.model.Booking
-import com.github.ryebook.common.infra.RedisCasTemplate
+import com.github.ryebook.common.infra.LettuceLockTemplate
 import com.github.ryebook.product.application.ProductGetService
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 class BookingCreateMultipleService(
     private val productGetService: ProductGetService,
     private val bookingRepository: BookingRepository,
-    private val redisLockTemplate: RedisCasTemplate
+    private val redisLockTemplate: LettuceLockTemplate
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)

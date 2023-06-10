@@ -76,4 +76,16 @@ class BookingConcurrencyOnlyOneController(
     ) {
         bookingCreateService.createBookingByProductIdV4(request.userId, request.productId!!)
     }
+
+    @Operation(
+        summary = "사용자는 특정 프로덕트를 사전예약 구매",
+        description = "Redisson 을 이용 락 적용"
+    )
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    @PostMapping("pre-payment-v5")
+    fun createBookingByProductIdV5(
+        @RequestBody request: BookingDto.Request,
+    ) {
+        bookingCreateService.createBookingByProductIdV5(request.userId, request.productId!!)
+    }
 }

@@ -95,4 +95,25 @@ class BookingConcurrencyOnlyOneControllerTest {
             }.awaitAll()
         }
     }
+
+    @Test
+    fun `동시성 제어를 확인한다 V5 (Redisson 이용)`() {
+
+        val userIds = (1..500).map {
+            "루피-$it"
+        }
+
+        runBlocking {
+            userIds.map { userId ->
+                async(Dispatchers.IO) {
+
+                    val map = mapOf<String, Any>(
+                        "userId" to userId,
+                        "productId" to 1L
+                    )
+                    post(url = "$localhost/bookings/pre-payment-v5", json = map)
+                }
+            }.awaitAll()
+        }
+    }
 }

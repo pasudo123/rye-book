@@ -68,6 +68,9 @@ dependencies {
     // redis + lettuce
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
 
+    // redisson : https://mvnrepository.com/artifact/org.redisson/redisson
+    implementation("org.redisson:redisson:3.21.3")
+
     // khttp
     implementation("khttp:khttp:0.1.0")
 

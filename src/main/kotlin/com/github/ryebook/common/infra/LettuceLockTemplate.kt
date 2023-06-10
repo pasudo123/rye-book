@@ -11,11 +11,14 @@ import org.springframework.stereotype.Service
 import java.time.Duration
 
 /**
+ * redis client(lettuce) + transaction(+ watch operation) 연산을 통한 락
+ * - 단일 레디스 서버에 대한 동시성 보장
+ *
  * https://redis.io/docs/manual/transactions/#optimistic-locking-using-check-and-set
  * https://docs.spring.io/spring-data/data-redis/docs/current/reference/html/#tx.spring
  */
 @Service
-class RedisCasTemplate(
+class LettuceLockTemplate(
     private val stringRedisTemplate: StringRedisTemplate
 ) {
 

@@ -2,7 +2,8 @@ package com.github.ryebook.booking.application
 
 import com.github.ryebook.booking.infra.BookingRepository
 import com.github.ryebook.booking.model.Booking
-import com.github.ryebook.common.infra.RedisCasTemplate
+import com.github.ryebook.common.infra.LettuceLockTemplate
+import com.github.ryebook.common.infra.RedissonLockTemplate
 import com.github.ryebook.product.application.ProductGetService
 import com.github.ryebook.product.infra.ProductRepository
 import com.github.ryebook.product.infra.ProductV2Repository
@@ -17,7 +18,8 @@ class BookingCreateOnlyOneService(
     private val productV2Repository: ProductV2Repository,
 
     private val bookingRepository: BookingRepository,
-    private val redisLockTemplate: RedisCasTemplate
+    private val redisLockTemplate: LettuceLockTemplate,
+    private val redissonLockTemplate: RedissonLockTemplate
 ) {
 
     private val log = LoggerFactory.getLogger(javaClass)
@@ -92,6 +94,24 @@ class BookingCreateOnlyOneService(
             productV2Repository.save(product)
         } else {
             log.info("userId[$userId] 예약 XXXXX ")
+        }
+    }
+
+    @Transactional
+    fun createBookingByProductIdV5(
+        userId: String,
+        productId: Long
+    ) {
+
+        val product = productGetService.findByIdOrThrow(productId)
+
+        if (product.isBookingPossible() && redissonLockTemplate.doLockingPossibleOrFalse(userId, product)) {
+            log.info("userId[$userId] 예약 OOOOO")
+            product.reduceQuantity(quantity = -1)
+            bookingRepository.save(Booking(userId, product.id!!))
+            productRepository.save(product)
+        } else {
+            log.error("userId[$userId] 예약 XXXXX")
         }
     }
 }
