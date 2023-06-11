@@ -111,7 +111,7 @@ class BookingCreateOnlyOneService(
             bookingRepository.save(Booking(userId, product.id!!))
             productRepository.save(product)
         } else {
-            log.error("userId[$userId] 예약 XXXXX")
+            // log.error("userId[$userId] 예약 XXXXX")
         }
     }
 }

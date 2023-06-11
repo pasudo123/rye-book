@@ -30,10 +30,16 @@ class RedissonLockTemplate(
         val currentProductLock: RLock = redissonClient.getLock(lockKey)
 
         return try {
-            currentProductLock.tryLock(50, (6000 * 10 * 60), TimeUnit.MILLISECONDS)
+            /**
+             * waitTime : 락을 기다리는 시간
+             * leaseTime : 락을 임대하는 시간 (해당 시간이 지나면 락을 해제한다.)
+             */
+            return currentProductLock.tryLock(100, 600000, TimeUnit.MILLISECONDS)
         } catch (exception: Exception) {
             log.error("##userId=$userId redisson lock 획득 시 문제가 발생했습니다. : ${exception.message}")
             false
+        } finally {
+             currentProductLock.unlock()
         }
     }
 }
