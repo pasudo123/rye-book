@@ -39,7 +39,7 @@ class RedissonLockTemplate(
             log.error("##userId=$userId redisson lock 획득 시 문제가 발생했습니다. : ${exception.message}")
             false
         } finally {
-             currentProductLock.unlock()
+            currentProductLock.unlock()
         }
     }
 }
